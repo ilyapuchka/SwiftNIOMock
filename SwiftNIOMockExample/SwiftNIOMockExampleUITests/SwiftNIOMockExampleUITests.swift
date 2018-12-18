@@ -26,8 +26,10 @@ class SwiftNIOMockExampleUITests: XCTestCase {
 
     func testExample() {
         let exp = expectation(description: "Recieved response")
-        URLSession.shared.dataTask(with: URL(string: "http://localhost:8080")!)
-        URLSession.shared.dataTask(with: URL(string: "http://localhost:8080")!) { (data, response, error) in
+        var request = URLRequest(url: URL(string: "http://localhost:8080")!)
+        request.httpMethod = "POST"
+        request.httpBody = "Hello world".data(using: .utf8)
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
             print(String(data: data ?? Data(), encoding: .utf8) ?? "nil")
             print(response ?? "nil")
             print(error ?? "nil")
