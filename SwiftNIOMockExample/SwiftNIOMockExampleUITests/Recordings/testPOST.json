@@ -1,0 +1,63 @@
+[
+  {
+    "request" : {
+      "method" : "POST",
+      "body" : "Hello world",
+      "headers" : {
+        "Accept" : "*\/*",
+        "Host" : "localhost:8080",
+        "Connection" : "keep-alive",
+        "Accept-Language" : "en-us",
+        "If-None-Match" : "W\/\"1bb-SX48QhT\/15iowa3VFuqXZ+q\/VRI\"",
+        "Content-Type" : "text\/html; charset=utf-8",
+        "Accept-Encoding" : "gzip, deflate",
+        "User-Agent" : "SwiftNIOMockExampleUITests-Runner\/1 CFNetwork\/975.0.3 Darwin\/17.7.0",
+        "Content-Length" : "11",
+        "Cookie" : "sails.sid=s%3A8e4ywEa-s53qF5JaToxFjA6jT-PFBfpV.iqBucmW7iuuMHDheZ9nMAlBBUIhSYHEsN%2BYdJy7RhDw"
+      },
+      "url" : "https:\/\/postman-echo.com\/post"
+    },
+    "response" : {
+      "status" : 200,
+      "body" : {
+        "json" : null,
+        "url" : "https:\/\/localhost\/post",
+        "data" : "Hello world",
+        "headers" : {
+          "accept" : "*\/*",
+          "content-type" : "text\/html; charset=utf-8",
+          "cookie" : "sails.sid=s%3A8e4ywEa-s53qF5JaToxFjA6jT-PFBfpV.iqBucmW7iuuMHDheZ9nMAlBBUIhSYHEsN%2BYdJy7RhDw",
+          "user-agent" : "SwiftNIOMockExampleUITests-Runner\/1 CFNetwork\/975.0.3 Darwin\/17.7.0",
+          "if-none-match" : "W\/\"1bb-SX48QhT\/15iowa3VFuqXZ+q\/VRI\"",
+          "x-forwarded-port" : "443",
+          "host" : "localhost",
+          "x-forwarded-proto" : "https",
+          "content-length" : "11",
+          "accept-encoding" : "gzip, deflate",
+          "accept-language" : "en-us"
+        },
+        "args" : {
+
+        },
+        "files" : {
+
+        },
+        "form" : {
+
+        }
+      },
+      "headers" : {
+        "Content-Encoding" : "gzip",
+        "Etag" : "W\/\"232-cbBU4vH3EPng6\/bwfYkSAWeA06E\"",
+        "Connection" : "keep-alive",
+        "Content-Type" : "application\/json; charset=utf-8",
+        "Vary" : "Accept-Encoding",
+        "Date" : "Thu, 20 Dec 2018 19:34:39 GMT",
+        "Content-Length" : "426",
+        "Server" : "nginx",
+        "Set-Cookie" : "sails.sid=s%3AGesyRZ19NLJHV7Pp2uzRF72PCm0-B2Wh.ji%2FUcCckMVk%2BkS3fYJxESrspbzu54k7K9k30zAHf5Og; Path=\/; HttpOnly"
+      },
+      "url" : "https:\/\/postman-echo.com\/post"
+    }
+  }
+]

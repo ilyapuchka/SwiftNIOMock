@@ -208,15 +208,19 @@ extension Server.HTTPHandler {
             }
         }
 
-        public func sendJSON<T: Encodable>(_ statusCode: HTTPResponseStatus, value: T) -> Void {
+        public func sendJSON<T: Encodable>(_ statusCode: HTTPResponseStatus, headers: HTTPHeaders = HTTPHeaders(), value: T) throws -> Void {
             start(statusCode)
-            setHeaders(HTTPHeaders([("Content-Type", "application/json; charset=utf-8")]))
-            try! sendBody(JSONEncoder().encode(value))
+            var headers = headers
+            headers.replaceOrAdd(name: "Content-Type", value: "application/json; charset=utf-8")
+            setHeaders(headers)
+            try sendBody(JSONEncoder().encode(value))
         }
 
-        public func sendString(_ statusCode: HTTPResponseStatus, value: String) -> Void {
+        public func sendString(_ statusCode: HTTPResponseStatus, headers: HTTPHeaders = HTTPHeaders(), value: String) -> Void {
             start(statusCode)
-            setHeaders(HTTPHeaders([("Content-Type", "text/html; charset=utf-8")]))
+            var headers = headers
+            headers.replaceOrAdd(name: "Content-Type", value: "text/html; charset=utf-8")
+            setHeaders(headers)
             sendBody(value.data(using: .utf8)!)
         }
     }

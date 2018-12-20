@@ -1,0 +1,49 @@
+[
+  {
+    "request" : {
+      "url" : "https:\/\/postman-echo.com\/get",
+      "method" : "GET",
+      "headers" : {
+        "Accept" : "*\/*",
+        "Host" : "localhost:8080",
+        "Accept-Language" : "en-us",
+        "Connection" : "keep-alive",
+        "If-None-Match" : "W\/\"153-D\/GcDAZ1WLhMovYNpJFnyvZx\/fs\"",
+        "Accept-Encoding" : "gzip, deflate",
+        "User-Agent" : "SwiftNIOMockExampleUITests-Runner\/1 CFNetwork\/975.0.3 Darwin\/17.7.0",
+        "Cookie" : "sails.sid=s%3A8e4ywEa-s53qF5JaToxFjA6jT-PFBfpV.iqBucmW7iuuMHDheZ9nMAlBBUIhSYHEsN%2BYdJy7RhDw"
+      }
+    },
+    "response" : {
+      "status" : 200,
+      "body" : {
+        "headers" : {
+          "accept" : "*\/*",
+          "cookie" : "sails.sid=s%3A8e4ywEa-s53qF5JaToxFjA6jT-PFBfpV.iqBucmW7iuuMHDheZ9nMAlBBUIhSYHEsN%2BYdJy7RhDw",
+          "if-none-match" : "W\/\"153-D\/GcDAZ1WLhMovYNpJFnyvZx\/fs\"",
+          "x-forwarded-port" : "443",
+          "host" : "localhost",
+          "x-forwarded-proto" : "https",
+          "accept-language" : "en-us",
+          "accept-encoding" : "gzip, deflate",
+          "user-agent" : "SwiftNIOMockExampleUITests-Runner\/1 CFNetwork\/975.0.3 Darwin\/17.7.0"
+        },
+        "args" : {
+
+        },
+        "url" : "https:\/\/localhost\/get"
+      },
+      "headers" : {
+        "Connection" : "keep-alive",
+        "Etag" : "W\/\"1bb-SX48QhT\/15iowa3VFuqXZ+q\/VRI\"",
+        "Content-Type" : "application\/json; charset=utf-8",
+        "Date" : "Thu, 20 Dec 2018 19:34:32 GMT",
+        "Vary" : "Accept-Encoding",
+        "Content-Length" : "354",
+        "Server" : "nginx",
+        "Content-Encoding" : "gzip"
+      },
+      "url" : "https:\/\/postman-echo.com\/get"
+    }
+  }
+]

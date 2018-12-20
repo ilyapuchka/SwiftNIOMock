@@ -14,6 +14,8 @@
 		B5BCF87221C954BA009DF652 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF87021C954BA009DF652 /* LaunchScreen.storyboard */; };
 		B5BCF87D21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */; };
 		B5BCF8A321C95545009DF652 /* SwiftNIOMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BCF8A221C95545009DF652 /* SwiftNIOMock.framework */; };
+		B5BCF8D521CC1B93009DF652 /* Vinyl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BCF8D421CC1B93009DF652 /* Vinyl.framework */; };
+		B5BCF8D821CC1BF0009DF652 /* Recordings in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF8D721CC1BF0009DF652 /* Recordings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,9 @@
 		B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNIOMockExampleUITests.swift; sourceTree = "<group>"; };
 		B5BCF87E21C954BA009DF652 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5BCF8A221C95545009DF652 /* SwiftNIOMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftNIOMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5BCF8D221CC1B25009DF652 /* SwiftNIOMockVinyl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftNIOMockVinyl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5BCF8D421CC1B93009DF652 /* Vinyl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vinyl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5BCF8D721CC1BF0009DF652 /* Recordings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Recordings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5BCF8D521CC1B93009DF652 /* Vinyl.framework in Frameworks */,
 				B5BCF8A321C95545009DF652 /* SwiftNIOMock.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */,
+				B5BCF8D721CC1BF0009DF652 /* Recordings */,
 				B5BCF87E21C954BA009DF652 /* Info.plist */,
 			);
 			path = SwiftNIOMockExampleUITests;
@@ -103,6 +110,8 @@
 		B5BCF8A121C95545009DF652 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5BCF8D421CC1B93009DF652 /* Vinyl.framework */,
+				B5BCF8D221CC1B25009DF652 /* SwiftNIOMockVinyl.framework */,
 				B5BCF8A221C95545009DF652 /* SwiftNIOMock.framework */,
 			);
 			name = Frameworks;
@@ -199,6 +208,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5BCF8D821CC1BF0009DF652 /* Recordings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

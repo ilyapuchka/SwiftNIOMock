@@ -1,0 +1,47 @@
+[
+  {
+    "request" : {
+      "url" : "https:\/\/postman-echo.com\/get",
+      "method" : "GET",
+      "headers" : {
+        "Host" : "localhost:8080",
+        "Accept" : "*\/*",
+        "User-Agent" : "SwiftNIOMockExampleUITests-Runner\/1 CFNetwork\/975.0.3 Darwin\/17.7.0",
+        "Accept-Encoding" : "gzip, deflate",
+        "Connection" : "keep-alive",
+        "Accept-Language" : "en-us"
+      }
+    },
+    "response" : {
+      "status" : 200,
+      "body" : {
+        "headers" : {
+          "accept" : "*\/*",
+          "if-none-match" : "W\/\"1bb-TjVovasPpx9yXC28riuXpSmqHac\"",
+          "x-forwarded-port" : "443",
+          "host" : "localhost",
+          "x-forwarded-proto" : "https",
+          "accept-language" : "en-us",
+          "accept-encoding" : "gzip, deflate",
+          "user-agent" : "SwiftNIOMockExampleUITests-Runner\/1 CFNetwork\/975.0.3 Darwin\/17.7.0"
+        },
+        "args" : {
+
+        },
+        "url" : "https:\/\/localhost\/get"
+      },
+      "headers" : {
+        "Content-Encoding" : "gzip",
+        "Etag" : "W\/\"153-D\/GcDAZ1WLhMovYNpJFnyvZx\/fs\"",
+        "Connection" : "keep-alive",
+        "Content-Type" : "application\/json; charset=utf-8",
+        "Vary" : "Accept-Encoding",
+        "Date" : "Thu, 20 Dec 2018 19:34:25 GMT",
+        "Content-Length" : "268",
+        "Server" : "nginx",
+        "Set-Cookie" : "sails.sid=s%3A8e4ywEa-s53qF5JaToxFjA6jT-PFBfpV.iqBucmW7iuuMHDheZ9nMAlBBUIhSYHEsN%2BYdJy7RhDw; Path=\/; HttpOnly"
+      },
+      "url" : "https:\/\/postman-echo.com\/get"
+    }
+  }
+]
