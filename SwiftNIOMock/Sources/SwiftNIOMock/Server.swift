@@ -16,7 +16,7 @@ open class Server {
     var serverChannel: Channel!
     public let port: Int
 
-    public init(port: Int, router: @escaping Middleware) {
+    public init(port: Int, handler: @escaping Middleware) {
         self.port = port
 
         self.bootstrap = ServerBootstrap(group: group)
@@ -25,7 +25,7 @@ open class Server {
             .childChannelInitializer { channel in
                 channel.pipeline.configureHTTPServerPipeline(withErrorHandling: true)
                     .then {
-                        channel.pipeline.add(handler: HTTPHandler(router: router))
+                        channel.pipeline.add(handler: HTTPHandler(handler: handler))
                     }.then {
                         channel.pipeline.add(handler: HTTPResponseCompressor())
                 }
@@ -61,10 +61,10 @@ extension Server {
         public typealias InboundIn = HTTPServerRequestPart
 
         private var state: State = .idle
-        let router: Middleware
+        let handler: Middleware
 
-        init(router: @escaping Middleware) {
-            self.router = router
+        init(handler: @escaping Middleware) {
+            self.handler = handler
         }
 
         public func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
@@ -92,7 +92,7 @@ extension Server {
                 let eventLoop = ctx.channel.eventLoop
                 let response = Response(eventLoop: eventLoop)
 
-                router(request, response) {
+                handler(request, response) {
                     eventLoop.execute {
                         _ = ctx.channel.write(HTTPServerResponsePart.head(
                             HTTPResponseHead(version: head.version, status: response.statusCode, headers: response.headers))

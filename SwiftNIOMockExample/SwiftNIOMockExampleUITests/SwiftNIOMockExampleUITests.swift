@@ -50,7 +50,7 @@ class SwiftNIOMockExampleUITests: XCTestCase {
             return ("This response was intercepted!\r\n" + string).data(using: .utf8)!
         })
 
-        server = Server(port: 8080, router:
+        server = Server(port: 8080, handler:
             SwiftNIOMock.router(route: { request in
                 guard case .GET = request.head.method, request.head.uri == "/helloworld" else {
                     return nil
@@ -131,7 +131,7 @@ class SwiftNIOMockExampleUITests: XCTestCase {
     func testDelay() {
         try! server.stop()
 
-        server = Server(port: 8080, router: SwiftNIOMock.delay(.seconds(2), middleware: notFound))
+        server = Server(port: 8080, handler: SwiftNIOMock.delay(.seconds(2), middleware: notFound))
         try! server.start()
 
         let exp = expectation(description: "Recieved response")
