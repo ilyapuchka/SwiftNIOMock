@@ -90,7 +90,7 @@ extension Server {
                 var responseBuffer = ctx.channel.allocator.buffer(capacity: 0)
 
                 let eventLoop = ctx.channel.eventLoop
-                let response = Response(eventLoop: eventLoop)
+                let response = Response()
 
                 handler(request, response) {
                     eventLoop.execute {
@@ -178,34 +178,31 @@ extension Server.HTTPHandler {
 
 extension Server.HTTPHandler {
     public class Response {
-        var eventLoop: EventLoop
         var state: State = .idle
         public private(set) var statusCode: HTTPResponseStatus = .ok
         public private(set) var headers: HTTPHeaders = HTTPHeaders()
         public private(set) var body: Data?
 
-        init(eventLoop: EventLoop) {
-            self.eventLoop = eventLoop
-        }
-
         public func start(_ statusCode: HTTPResponseStatus) -> Void {
-            eventLoop.execute {
-                self.statusCode = statusCode
-            }
+            self.statusCode = statusCode
         }
 
         public func setHeaders(_ headers: HTTPHeaders) -> Void {
-            eventLoop.execute {
-                headers.forEach { self.headers.replaceOrAdd(name: $0, value: $1) }
-            }
+            self.headers = headers
+        }
+
+        public func replaceOrAddHeaders(_ headers: HTTPHeaders) -> Void {
+            headers.forEach { self.headers.replaceOrAdd(name: $0, value: $1) }
         }
 
         public func sendBody(_ data: Data) -> Void {
-            eventLoop.execute {
-                var body = self.body ?? Data()
-                body.append(data)
-                self.body = body
-            }
+            self.body = data
+        }
+
+        public func sendOrAppendBody(_ data: Data) -> Void {
+            var body = self.body ?? Data()
+            body.append(data)
+            self.body = body
         }
 
         public func sendJSON<T: Encodable>(_ statusCode: HTTPResponseStatus, headers: HTTPHeaders = HTTPHeaders(), value: T) throws -> Void {
@@ -247,7 +244,10 @@ public typealias Middleware = (
 ) -> Void
 
 /// Middleware that can redirect requests to other middlewares
-public func router(route: @escaping (Server.HTTPHandler.Request) -> Middleware?, notFound: @escaping Middleware) -> Middleware {
+public func router(
+    route: @escaping (Server.HTTPHandler.Request) -> Middleware?,
+    notFound: @escaping Middleware
+) -> Middleware {
     return { request, response, next in
         (route(request) ?? notFound)(request, response, next)
     }
@@ -256,14 +256,16 @@ public func router(route: @escaping (Server.HTTPHandler.Request) -> Middleware?,
 /// Middleware that allows to redirect incomming request and intercept responses
 public func redirect(
     session: URLSession = URLSession.shared,
-    request override: @escaping (Server.HTTPHandler.Request) -> Server.HTTPHandler.Request,
-    body: @escaping (Data) -> Data = { $0 }) -> Middleware {
+    request redirect: @escaping (Server.HTTPHandler.Request) -> Server.HTTPHandler.Request,
+    response intercept: @escaping (Server.HTTPHandler.Response) -> Void = { _ in }
+) -> Middleware {
     return { request, response, next in
-        let task = session.dataTask(with: URLRequest(override(request))) { data, urlResponse, error in
+        let task = session.dataTask(with: URLRequest(redirect(request))) { data, urlResponse, error in
             guard let urlResponse = urlResponse as? HTTPURLResponse else {
                 next()
                 return
             }
+
             response.start(HTTPResponseStatus(statusCode: urlResponse.statusCode))
             var headers = HTTPHeaders(urlResponse.allHeaderFields.map { ("\($0.key)", "\($0.value)") })
             // compressor will add this header itself,
@@ -271,7 +273,9 @@ public func redirect(
             headers.remove(name: "Content-Encoding")
 
             response.setHeaders(headers)
-            data.map(body).map(response.sendBody)
+            data.map(response.sendBody)
+
+            intercept(response)
             next()
         }
         task.resume()
