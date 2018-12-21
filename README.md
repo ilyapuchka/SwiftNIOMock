@@ -20,7 +20,7 @@ In the test create an instance of the server and start it in the `setUp` method 
 ```swift
 override func setUp() {
     server = Server(port: 8080, handler: <#Middleware#>)
-    try! sever.start()
+    try! server.start()
 }
 
 override func tearDown() {
