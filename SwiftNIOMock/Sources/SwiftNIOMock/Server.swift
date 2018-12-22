@@ -264,6 +264,7 @@ public func redirect(
 
             // compressor will add this header itself,
             // so they may be duplicated and decoding on the client side will fail
+            // see: https://github.com/apple/swift-nio/issues/717
             response.headers.remove(name: "Content-Encoding")
 
             next()

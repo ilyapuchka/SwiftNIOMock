@@ -147,6 +147,7 @@ class SwiftNIOMockTests: XCTestCase {
             )
 
             // content lengths and encoding will be different because of compression
+            // see: https://github.com/apple/swift-nio/issues/717
             responseHead.headers.remove(name: "Content-Length")
             originalResponse.headers.remove(name: "Content-Length")
             responseHead.headers.remove(name: "Content-Encoding")
