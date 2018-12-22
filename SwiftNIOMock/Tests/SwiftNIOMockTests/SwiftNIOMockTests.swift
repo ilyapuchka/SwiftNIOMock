@@ -102,38 +102,42 @@ class SwiftNIOMockTests: XCTestCase {
         request.httpMethod = "POST"
         request.httpBody = "Hello world!".data(using: .utf8)
         request.setValue("text/html; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("xctest", forHTTPHeaderField: "User-Agent")
+        request.setValue("en-gb", forHTTPHeaderField: "Accept-Language")
 //        request.setValue("gzip", forHTTPHeaderField: "Accept-Encoding")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
+            struct EchoData: Decodable, Equatable {
+                let args: [String: String]
+                let data: String
+                let headers: [String: String]
+                let url: String
+            }
+            struct ResponseJSON: Decodable, Equatable {
+                let response: EchoData
+            }
             // expect to recieve intercepted response
-            let expectedData = try? JSONSerialization.data(withJSONObject: [
-                "response": [
-                    "args": ["query": "value"],
-                    "data":"Hello world!",
-                    "files": [:],
-                    "form": [:],
-                    "headers": [
-                        "accept": "*/*",
-                        "accept-encoding": "gzip, deflate",
-                        "accept-language": "en-us",
-                        "content-length": "12",
-                        "content-type": "text/html; charset=utf-8",
-                        "custom-request-header": "custom-request-header-value",
-                        "host": "localhost",
-                        "user-agent": "xctest (unknown version) CFNetwork/975.0.3 Darwin/17.7.0",
-                        "x-forwarded-port": "443",
-                        "x-forwarded-proto": "https"
-                    ],
-                    "json": nil,
-                    "url": "https://localhost/post?query=value",
-                ]
-                ], options: [.sortedKeys])
+            let expectedResponseJSON = ResponseJSON(response: EchoData(
+                args: ["query": "value"],
+                data: "Hello world!",
+                headers: [
+                    "accept": "*/*",
+                    "accept-encoding": "gzip, deflate",
+                    "accept-language": "en-gb",
+                    "content-length": "12",
+                    "content-type": "text/html; charset=utf-8",
+                    "custom-request-header": "custom-request-header-value",
+                    "host": "localhost",
+                    "user-agent": "xctest",
+                    "x-forwarded-port": "443",
+                    "x-forwarded-proto": "https"
+                ],
+                url: "https://localhost/post?query=value"
+            ))
 
-            let receivedData = data
-                .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
-                .flatMap { try? JSONSerialization.data(withJSONObject: $0, options: [.sortedKeys]) }
+            let receivedResponseJSON = data.flatMap { try? JSONDecoder().decode(ResponseJSON.self, from: $0) }
 
-            XCTAssertEqual(receivedData, expectedData)
+            XCTAssertEqual(expectedResponseJSON, receivedResponseJSON)
 
             let httpResponse = response as! HTTPURLResponse
             var responseHead = HTTPResponseHead(
