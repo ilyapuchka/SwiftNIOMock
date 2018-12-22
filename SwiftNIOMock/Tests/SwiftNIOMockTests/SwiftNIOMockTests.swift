@@ -44,7 +44,7 @@ class SwiftNIOMockTests: XCTestCase {
         defer { try! server.stop() }
 
         // when making a request
-        let receivedResponse = XCTestExpectation()
+        let receivedResponse = self.expectation(description: "")
 
         let url = URL(string: "http://localhost:8080")!
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -54,13 +54,13 @@ class SwiftNIOMockTests: XCTestCase {
             XCTAssertTrue(data?.count == 0)
             receivedResponse.fulfill()
         }.resume()
-        XCTWaiter().wait(for: [receivedResponse], timeout: 5)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testCanRedirectRequestAndInterceptResponse() {
         // given server configured with redirect
 
-        let calledRedirect = XCTestExpectation()
+        let calledRedirect = self.expectation(description: "")
         let redirectRequest = { (request: Server.HTTPHandler.Request) -> Server.HTTPHandler.Request in
             calledRedirect.fulfill()
             var head = request.head
@@ -75,7 +75,7 @@ class SwiftNIOMockTests: XCTestCase {
             return Server.HTTPHandler.Request(head: head, body: request.body, ctx: request.ctx)
         }
 
-        let calledIntercept = XCTestExpectation()
+        let calledIntercept = self.expectation(description: "")
         var originalResponse: HTTPResponseHead!
         let interceptResponse = { (response: Server.HTTPHandler.Response) in
             calledIntercept.fulfill()
@@ -95,7 +95,7 @@ class SwiftNIOMockTests: XCTestCase {
         defer { try! server.stop() }
 
         // when making a request
-        let receivedResponse = XCTestExpectation()
+        let receivedResponse = self.expectation(description: "")
 
         let url = URL(string: "http://localhost:8080?query=value")!
         var request = URLRequest(url: url)
@@ -104,7 +104,7 @@ class SwiftNIOMockTests: XCTestCase {
         request.setValue("text/html; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("xctest", forHTTPHeaderField: "User-Agent")
         request.setValue("en-gb", forHTTPHeaderField: "Accept-Language")
-//        request.setValue("gzip", forHTTPHeaderField: "Accept-Encoding")
+        request.setValue("gzip", forHTTPHeaderField: "Accept-Encoding")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             struct EchoData: Decodable, Equatable {
@@ -122,7 +122,7 @@ class SwiftNIOMockTests: XCTestCase {
                 data: "Hello world!",
                 headers: [
                     "accept": "*/*",
-                    "accept-encoding": "gzip, deflate",
+                    "accept-encoding": "gzip",
                     "accept-language": "en-gb",
                     "content-length": "12",
                     "content-type": "text/html; charset=utf-8",
@@ -157,7 +157,8 @@ class SwiftNIOMockTests: XCTestCase {
 
             receivedResponse.fulfill()
         }.resume()
-        XCTWaiter().wait(for: [calledRedirect, calledIntercept, receivedResponse], timeout: 5, enforceOrder: true)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
 }
+
