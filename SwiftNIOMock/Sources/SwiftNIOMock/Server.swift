@@ -10,16 +10,20 @@ import NIO
 import NIOHTTP1
 
 open class Server {
-    let group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
-    let bootstrap: ServerBootstrap
-
-    var serverChannel: Channel!
     public let port: Int
+
+    let handler: Middleware
+    private(set) var group: EventLoopGroup!
+    private(set) var bootstrap: ServerBootstrap!
+    private(set) var serverChannel: Channel!
 
     public init(port: Int, handler: @escaping Middleware) {
         self.port = port
+        self.handler = handler
+    }
 
-        self.bootstrap = ServerBootstrap(group: group)
+    func bootstrapServer(handler: @escaping Middleware) -> ServerBootstrap {
+        return ServerBootstrap(group: group)
             .serverChannelOption(ChannelOptions.backlog, value: 256)
             .serverChannelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .childChannelInitializer { channel in
@@ -36,7 +40,10 @@ open class Server {
     }
 
     public func start() throws {
-        serverChannel = try self.bootstrap.bind(host: "localhost", port: port).wait()
+        group = group ?? MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
+        bootstrap = bootstrap ?? bootstrapServer(handler: handler)
+
+        serverChannel = try bootstrap.bind(host: "localhost", port: port).wait()
         print("Server listening on:", serverChannel.localAddress!)
 
         serverChannel.closeFuture.whenComplete {
@@ -45,9 +52,11 @@ open class Server {
     }
 
     public func stop() throws {
-        try self.serverChannel?.close().wait()
-        self.serverChannel = nil
+        try serverChannel?.close().wait()
         try group.syncShutdownGracefully()
+        serverChannel = nil
+        bootstrap = nil
+        group = nil
     }
 
     deinit {
@@ -179,46 +188,24 @@ extension Server.HTTPHandler {
 extension Server.HTTPHandler {
     public class Response {
         var state: State = .idle
-        public private(set) var statusCode: HTTPResponseStatus = .ok
-        public private(set) var headers: HTTPHeaders = HTTPHeaders()
-        public private(set) var body: Data?
-
-        public func start(_ statusCode: HTTPResponseStatus) -> Void {
-            self.statusCode = statusCode
-        }
-
-        public func setHeaders(_ headers: HTTPHeaders) -> Void {
-            self.headers = headers
-        }
-
-        public func replaceOrAddHeaders(_ headers: HTTPHeaders) -> Void {
-            headers.forEach { self.headers.replaceOrAdd(name: $0, value: $1) }
-        }
-
-        public func sendBody(_ data: Data) -> Void {
-            self.body = data
-        }
-
-        public func sendOrAppendBody(_ data: Data) -> Void {
-            var body = self.body ?? Data()
-            body.append(data)
-            self.body = body
-        }
+        public var statusCode: HTTPResponseStatus = .ok
+        public var headers: HTTPHeaders = HTTPHeaders()
+        public var body: Data?
 
         public func sendJSON<T: Encodable>(_ statusCode: HTTPResponseStatus, headers: HTTPHeaders = HTTPHeaders(), value: T) throws -> Void {
-            start(statusCode)
+            self.statusCode = statusCode
             var headers = headers
             headers.replaceOrAdd(name: "Content-Type", value: "application/json; charset=utf-8")
-            setHeaders(headers)
-            try sendBody(JSONEncoder().encode(value))
+            self.headers = headers
+            self.body = try JSONEncoder().encode(value)
         }
 
         public func sendString(_ statusCode: HTTPResponseStatus, headers: HTTPHeaders = HTTPHeaders(), value: String) -> Void {
-            start(statusCode)
+            self.statusCode = statusCode
             var headers = headers
             headers.replaceOrAdd(name: "Content-Type", value: "text/html; charset=utf-8")
-            setHeaders(headers)
-            sendBody(value.data(using: .utf8)!)
+            self.headers = headers
+            self.body = value.data(using: .utf8)
         }
     }
 }
@@ -260,22 +247,25 @@ public func redirect(
     response intercept: @escaping (Server.HTTPHandler.Response) -> Void = { _ in }
 ) -> Middleware {
     return { request, response, next in
-        let task = session.dataTask(with: URLRequest(redirect(request))) { data, urlResponse, error in
+        var redirect = URLRequest(redirect(request))
+        redirect.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+
+        let task = session.dataTask(with: redirect) { data, urlResponse, error in
             guard let urlResponse = urlResponse as? HTTPURLResponse else {
                 next()
                 return
             }
 
-            response.start(HTTPResponseStatus(statusCode: urlResponse.statusCode))
-            var headers = HTTPHeaders(urlResponse.allHeaderFields.map { ("\($0.key)", "\($0.value)") })
-            // compressor will add this header itself,
-            // so they may be duplicated and decoding on the client side will fail
-            headers.remove(name: "Content-Encoding")
-
-            response.setHeaders(headers)
-            data.map(response.sendBody)
+            response.statusCode = HTTPResponseStatus(statusCode: urlResponse.statusCode)
+            response.headers = HTTPHeaders(urlResponse.allHeaderFields.map { ("\($0.key)", "\($0.value)") })
+            response.body = data
 
             intercept(response)
+
+            // compressor will add this header itself,
+            // so they may be duplicated and decoding on the client side will fail
+            response.headers.remove(name: "Content-Encoding")
+
             next()
         }
         task.resume()

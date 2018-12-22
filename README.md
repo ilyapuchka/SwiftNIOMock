@@ -47,8 +47,8 @@ func echo(
     response: Server.HTTPHandler.Response,
     next: @escaping () -> Void
 ) {
-    response.start(.ok)
-    request.body.map(response.sendBody)
+    response.statusCode = .ok
+    response.body = request.body
     next()
 }
 ```
