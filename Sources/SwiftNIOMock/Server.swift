@@ -132,7 +132,7 @@ extension Server.HTTPHandler {
 
         mutating func requestReceived(head: HTTPRequestHead) {
             guard case .idle = self else {
-                precondition(false, "Invalid state for \(#function): \(self)")
+                preconditionFailure("Invalid state for \(#function): \(self)")
             }
             print("Received request: ", head)
             self = .receivingRequest(head, nil)
@@ -141,7 +141,7 @@ extension Server.HTTPHandler {
         mutating func bodyReceived(buffer: ByteBuffer) {
             var body = buffer
             guard case .receivingRequest(let header, var buffer) = self else {
-                precondition(false, "Invalid state for \(#function): \(self)")
+                preconditionFailure("Invalid state for \(#function): \(self)")
             }
             if buffer == nil {
                 buffer = body
@@ -153,7 +153,7 @@ extension Server.HTTPHandler {
 
         mutating func requestComplete() -> (HTTPRequestHead, ByteBuffer?)  {
             guard case let .receivingRequest(header, buffer) = self else {
-                precondition(false, "Invalid state for \(#function): \(self)")
+                preconditionFailure("Invalid state for \(#function): \(self)")
             }
             if var buffer = buffer {
                 print("Received body: \(buffer.readString(length: buffer.readableBytes) ?? "nil")")
@@ -164,7 +164,7 @@ extension Server.HTTPHandler {
 
         mutating func responseComplete() {
             guard case .sendingResponse = self else {
-                precondition(false, "Invalid state for response complete: \(self)")
+                preconditionFailure("Invalid state for response complete: \(self)")
             }
             self = .idle
         }
