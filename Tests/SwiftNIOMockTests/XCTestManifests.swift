@@ -1,3 +1,4 @@
+#if !canImport(ObjectiveC)
 import XCTest
 
 extension SwiftNIOMockTests {
@@ -9,7 +10,6 @@ extension SwiftNIOMockTests {
     ]
 }
 
-#if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
         testCase(SwiftNIOMockTests.__allTests),

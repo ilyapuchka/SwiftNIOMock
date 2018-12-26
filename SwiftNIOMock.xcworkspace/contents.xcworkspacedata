@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SwiftNIOMockExample/SwiftNIOMockExample.xcodeproj">
+      location = "group:SwiftNIOMock.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:SwiftNIOMock/SwiftNIOMock.xcodeproj">
+      location = "group:SwiftNIOMockExample/SwiftNIOMockExample.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:SwiftNIOMock/../SwiftNIOMockExample/SwiftNIOMockVinyl/SwiftNIOMockVinyl.xcodeproj">

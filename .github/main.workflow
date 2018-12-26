@@ -5,5 +5,5 @@ workflow "Test" {
 
 action "test" {
   uses = "ilyapuchka/SwiftGitHubAction@master"
-  args = "test --package-path SwiftNIOMock"
+  args = "test"
 }
