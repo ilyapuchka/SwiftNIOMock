@@ -79,8 +79,6 @@ class SwiftNIOMockExampleUITests: XCTestCase {
         server = nil
     }
 
-    // TODO: add asserts on the content of responses to validate that redirected requests are correct
-
     func testGET() {
         let exp = expectation(description: "Recieved response")
         var request = URLRequest(url: URL(string: "http://localhost:8080")!)

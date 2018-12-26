@@ -8,6 +8,6 @@
       location = "group:SwiftNIOMockExample/SwiftNIOMockExample.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:SwiftNIOMock/../SwiftNIOMockExample/SwiftNIOMockVinyl/SwiftNIOMockVinyl.xcodeproj">
+      location = "group:SwiftNIOMockExample/SwiftNIOMockVinyl/SwiftNIOMockVinyl.xcodeproj">
    </FileRef>
 </Workspace>
