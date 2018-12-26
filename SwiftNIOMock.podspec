@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
     s.summary = 'A web server based on SwiftNIO designed to be used as a mock server in UI automation tests'
     s.homepage = 'https://github.com/ilyapuchka/SwiftNIOMock'
     s.author = 'Ilya Puchka'
-    s.source = { :git => 'https://github.com/ilyapuchka/SwiftNIOMock', :tag => s.version.to_s }
+    s.source = { :git => 'https://github.com/ilyapuchka/SwiftNIOMock.git', :tag => s.version.to_s }
     s.module_name = 'SwiftNIOMock'
     s.swift_version = '4.2'
     s.cocoapods_version = '>=1.1.0'

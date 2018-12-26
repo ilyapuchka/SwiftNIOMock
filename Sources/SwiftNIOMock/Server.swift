@@ -276,7 +276,7 @@ public func redirect(
 /// Middleware that delay another middleware
 public func delay(_ delay: TimeAmount, middleware: @escaping Middleware) -> Middleware {
     return { request, response, next in
-        request.ctx.eventLoop.scheduleTask(in: delay) {
+        _ = request.ctx.eventLoop.scheduleTask(in: delay) {
             middleware(request, response, next)
         }
     }
