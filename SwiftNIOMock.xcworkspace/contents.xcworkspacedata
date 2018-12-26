@@ -4,10 +4,4 @@
    <FileRef
       location = "group:SwiftNIOMock.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:SwiftNIOMockExample/SwiftNIOMockExample.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:SwiftNIOMockExample/SwiftNIOMockVinyl/SwiftNIOMockVinyl.xcodeproj">
-   </FileRef>
 </Workspace>

@@ -1,0 +1,12 @@
+platform :ios, '12.0'
+
+target 'SwiftNIOMockExample' do
+  use_frameworks!
+
+  target 'SwiftNIOMockExampleUITests' do
+    inherit! :search_paths
+    pod 'Vinyl', :git => 'https://github.com/Velhotes/Vinyl.git'
+    pod 'SwiftNIOMock', :path => '../'
+  end
+
+end
