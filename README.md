@@ -72,8 +72,8 @@ func router(
 ) -> Middleware
 ```
 
-More specific example yet to come.
+To see an example of usage SwiftNIOMock in UI tests check SwiftNIOMockExample.
 
 ## Installation
 
-TBD
+You can install SwiftNIOMock with CocoaPods (1.6.0.beta.2) or Swift Package Manager
