@@ -89,8 +89,11 @@ class SwiftNIOMockTests: XCTestCase {
 
             originalResponse = HTTPResponseHead(version: HTTPVersion(major: 1, minor: 1), status: response.statusCode, headers: response.headers)
         }
-
-        let server = Server(port: 8080, handler: redirect(request: redirectRequest, response: interceptResponse))
+        let redirect = SwiftNIOMock.redirect(
+            request: redirectRequest,
+            response: interceptResponse
+        )
+        let server = Server(port: 8080, handler: redirect)
         try! server.start()
         defer { try! server.stop() }
 
@@ -124,6 +127,7 @@ class SwiftNIOMockTests: XCTestCase {
                     "accept": "*/*",
                     "accept-encoding": "gzip",
                     "accept-language": "en-gb",
+                    "cache-control": "no-cache",
                     "content-length": "12",
                     "content-type": "text/html; charset=utf-8",
                     "custom-request-header": "custom-request-header-value",
@@ -137,6 +141,9 @@ class SwiftNIOMockTests: XCTestCase {
 
             let receivedResponseJSON = data.flatMap { try? JSONDecoder().decode(ResponseJSON.self, from: $0) }
 
+            XCTAssertEqual(expectedResponseJSON.response.args, receivedResponseJSON?.response.args)
+            XCTAssertEqual(expectedResponseJSON.response.data, receivedResponseJSON?.response.data)
+            XCTAssertEqual(expectedResponseJSON.response.headers, receivedResponseJSON?.response.headers)
             XCTAssertEqual(expectedResponseJSON, receivedResponseJSON)
 
             let httpResponse = response as! HTTPURLResponse
