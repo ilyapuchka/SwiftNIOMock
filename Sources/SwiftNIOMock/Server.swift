@@ -230,10 +230,15 @@ public typealias Middleware = (
     _ next: @escaping () -> Void
 ) -> Void
 
+public let notFound: Middleware = { _, response, next in
+    response.sendString(.notFound, value: "404 Not Found")
+    next()
+}
+
 /// Middleware that can redirect requests to other middlewares
 public func router(
-    route: @escaping (Server.HTTPHandler.Request) -> Middleware?,
-    notFound: @escaping Middleware
+    route: @escaping (Server.HTTPHandler.Request) -> Middleware? = { _ in nil },
+    notFound: @escaping Middleware = notFound
 ) -> Middleware {
     return { request, response, next in
         (route(request) ?? notFound)(request, response, next)
