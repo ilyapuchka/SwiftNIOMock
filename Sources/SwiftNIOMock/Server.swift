@@ -17,7 +17,7 @@ open class Server {
     private(set) var bootstrap: ServerBootstrap!
     private(set) var serverChannel: Channel!
 
-    public init(port: Int, handler: @escaping Middleware) {
+    public init(port: Int, handler: @escaping Middleware = { _, _, next in next() }) {
         self.port = port
         self.handler = handler
     }

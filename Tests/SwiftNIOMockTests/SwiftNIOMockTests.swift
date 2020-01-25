@@ -5,7 +5,7 @@ import NIOHTTP1
 class SwiftNIOMockTests: XCTestCase {
     func testCanRestartServer() {
         // given server
-        let server = Server(port: 8080) { (_, _, next) in next() }
+        let server = Server(port: 8080)
 
         // when started
         try! server.start()
@@ -23,9 +23,9 @@ class SwiftNIOMockTests: XCTestCase {
 
     func testCanRunTwoServersOnDifferentPorts() {
         // given server1
-        let server1 = Server(port: 8080) { (_, _, next) in next() }
+        let server1 = Server(port: 8080)
         // given server2
-        let server2 = Server(port: 8081) { (_, _, next) in next() }
+        let server2 = Server(port: 8081)
 
         // when started 1
         try! server1.start()
@@ -39,7 +39,7 @@ class SwiftNIOMockTests: XCTestCase {
 
     func testCanReturnDefaultResponse() {
         // given server with empty handler
-        let server = Server(port: 8080) { (_, _, next) in next() }
+        let server = Server(port: 8080)
         try! server.start()
         defer { try! server.stop() }
 
