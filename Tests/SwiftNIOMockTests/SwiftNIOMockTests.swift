@@ -194,15 +194,52 @@ class SwiftNIOMockTests: XCTestCase {
     
     func testNonEmptyRouter() {
         // given server with non empty router
-        let router = SwiftNIOMock.router(route: { (request) -> Middleware? in
-            guard case .GET = request.head.method, request.head.uri == "/helloworld" else {
-                return nil
-            }
-            return { request, response, next in
+        let router = SwiftNIOMock.router {
+            GET(at: { $0.head.uri == "/helloworld" }, response: { request, response, next in
                 response.sendString(.ok, value: "Hello world!")
                 next()
+            })
+        }
+        withServer(handler: router) { server, expectation in
+            defer { expectation.fulfill() }
+            
+            // when making request to known route
+            let knownRouteExpectation = self.expectation(description: "")
+            let knownUrl = URL(string: "http://localhost:8080/helloworld")!
+            URLSession.shared.dataTask(with: knownUrl) { data, response, error in
+                defer { knownRouteExpectation.fulfill() }
+                // expect to recieve registered response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Hello world!")
+            }.resume()
+            
+            // when making request to unknown route
+            let unknownRouteExpectation = self.expectation(description: "")
+            let unknownUrl = URL(string: "http://localhost:8080")!
+            URLSession.shared.dataTask(with: unknownUrl) { data, response, error in
+                defer { unknownRouteExpectation.fulfill() }
+                // expect to recieve default not found response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 404)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Not Found")
+            }.resume()
+        }
+    }
+    
+    func testMultipleRoutes() {
+        let router = SwiftNIOMock.router(services: [
+            Service().routes {
+                GET(at: { $0.head.uri == "/helloworld" }, response: { request, response, next in
+                    response.sendString(.ok, value: "Hello world!")
+                    next()
+                })
+                GET(at: { $0.head.uri == "/echo" }, response: { request, response, next in
+                    response.sendString(.ok, value: "echo")
+                    next()
+                })
             }
-        })
+        ])
 
         withServer(handler: router) { server, expectation in
             defer { expectation.fulfill() }
@@ -216,6 +253,74 @@ class SwiftNIOMockTests: XCTestCase {
                 XCTAssertNil(error)
                 XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
                 XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Hello world!")
+            }.resume()
+            
+            // when making request to another route
+            let anotherRouteExpectation = self.expectation(description: "")
+            let anotherUrl = URL(string: "http://localhost:8080/echo")!
+            URLSession.shared.dataTask(with: anotherUrl) { data, response, error in
+                defer { anotherRouteExpectation.fulfill() }
+                // expect to recieve default not found response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "echo")
+            }.resume()
+            
+            // when making request to unknown route
+            let unknownRouteExpectation = self.expectation(description: "")
+            let unknownUrl = URL(string: "http://localhost:8080")!
+            URLSession.shared.dataTask(with: unknownUrl) { data, response, error in
+                defer { unknownRouteExpectation.fulfill() }
+                // expect to recieve default not found response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 404)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Not Found")
+            }.resume()
+        }
+    }
+    
+    func testMultipleServices() {
+        let helloService = Service().routes {
+            GET(at: { $0.head.uri == "/helloworld" }, response: { request, response, next in
+                response.sendString(.ok, value: "Hello world!")
+                next()
+            })
+        }
+        let echoService = Service().routes {
+            GET(at: { $0.head.uri == "/echo" }, response: { request, response, next in
+                response.sendString(.ok, value: "echo")
+                next()
+            })
+        }
+        
+        let router = SwiftNIOMock.router(services: [
+            helloService,
+            echoService
+        ])
+
+        withServer(handler: router) { server, expectation in
+            defer { expectation.fulfill() }
+            
+            // when making request to known route
+            let knownRouteExpectation = self.expectation(description: "")
+            let knownUrl = URL(string: "http://localhost:8080/helloworld")!
+            URLSession.shared.dataTask(with: knownUrl) { data, response, error in
+                defer { knownRouteExpectation.fulfill() }
+                // expect to recieve registered response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Hello world!")
+            }.resume()
+            
+            // when making request to another route
+            let anotherRouteExpectation = self.expectation(description: "")
+            let anotherUrl = URL(string: "http://localhost:8080/echo")!
+            URLSession.shared.dataTask(with: anotherUrl) { data, response, error in
+                defer { anotherRouteExpectation.fulfill() }
+                // expect to recieve default not found response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "echo")
             }.resume()
             
             // when making request to unknown route

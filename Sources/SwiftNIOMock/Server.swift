@@ -187,8 +187,12 @@ extension Server.HTTPHandler {
 
 extension Server.HTTPHandler {
     public class Response {
-        var state: State = .idle
-        public var statusCode: HTTPResponseStatus = .ok
+        // if nil then nothing was ever written to response
+        fileprivate var _statusCode: HTTPResponseStatus!
+        public var statusCode: HTTPResponseStatus {
+            get { _statusCode ?? .ok }
+            set { _statusCode = newValue }
+        }
         public var headers: HTTPHeaders = HTTPHeaders()
         public var body: Data?
 
@@ -241,8 +245,8 @@ public let notFound: Middleware = { _, response, next in
 
 /// Middleware that can redirect requests to other middlewares
 public func router(
-    route: @escaping (Server.HTTPHandler.Request) -> Middleware? = { _ in nil },
-    notFound: @escaping Middleware = notFound
+    notFound: @escaping Middleware = notFound,
+    route: @escaping (Server.HTTPHandler.Request) -> Middleware? = { _ in nil }
 ) -> Middleware {
     return { request, response, next in
         (route(request) ?? notFound)(request, response, next)
@@ -262,8 +266,7 @@ public func redirect(
 
         let task = session.dataTask(with: redirect) { data, urlResponse, error in
             guard let urlResponse = urlResponse as? HTTPURLResponse else {
-                next()
-                return
+                return next()
             }
 
             response.statusCode = HTTPResponseStatus(statusCode: urlResponse.statusCode)
@@ -290,4 +293,106 @@ public func delay(_ delay: TimeAmount, middleware: @escaping Middleware) -> Midd
             middleware(request, response, next)
         }
     }
+}
+
+public func route(_ method: HTTPMethod, at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return { request, httpResponse, next in
+        guard method == request.head.method, match(request) else {
+            return next()
+        }
+        response(request, httpResponse, next)
+    }
+}
+
+public func GET(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return route(.GET, at: match, response: response)
+}
+
+public func PUT(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return route(.PUT, at: match, response: response)
+}
+
+public func POST(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return route(.POST, at: match, response: response)
+}
+
+public func PATCH(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return route(.PATCH, at: match, response: response)
+}
+
+public func DELETE(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return route(.DELETE, at: match, response: response)
+}
+
+public protocol ServiceProtocol: class {
+    var routers: [Middleware] { get }
+    func routes(@RouterBuilder _ router: () -> Middleware) -> Self
+}
+
+open class Service: ServiceProtocol {
+    public private(set) var routers: [Middleware] = []
+    
+    public init() {}
+    
+    @discardableResult
+    public func routes(@RouterBuilder _ router: () -> Middleware) -> Self {
+        self.routers.append(router())
+        return self
+    }
+}
+
+
+@_functionBuilder
+public struct RouterBuilder {
+    public static func buildBlock(_ items: Middleware...) -> Middleware {
+        return buildBlock(items)
+    }
+    
+    public static func buildBlock(_ items: [Middleware]) -> Middleware {
+        let allRoutes = items
+        return { request, response, finish in
+            guard !allRoutes.isEmpty else {
+                return finish()
+            }
+            var next: (() -> Void)? = {}
+            var i = allRoutes.startIndex
+            next = {
+                let route = allRoutes[i]
+                i = allRoutes.index(after: i)
+                let isLast = i == allRoutes.endIndex
+                route(request, response, isLast ? finish : next!)
+            }
+            next!()
+        }
+    }
+}
+
+private func router(
+    notFound: @escaping Middleware = notFound,
+    route: @escaping Middleware
+) -> Middleware {
+    return { request, response, finish in
+        let next = {
+            if response._statusCode == nil {
+                notFound(request, response, finish)
+            } else {
+                finish()
+            }
+        }
+        route(request, response, next)
+    }
+}
+
+public func router(
+    notFound: @escaping Middleware = notFound,
+    @RouterBuilder _ routes: () -> Middleware
+) -> Middleware {
+    return SwiftNIOMock.router(notFound: notFound, route: routes())
+}
+
+public func router(
+    notFound: @escaping Middleware = notFound,
+    services: [Service]
+) -> Middleware {
+    return SwiftNIOMock.router(notFound: notFound, route: RouterBuilder.buildBlock(services.flatMap { $0.routers }))
 }
