@@ -231,7 +231,7 @@ public typealias Middleware = (
 ) -> Void
 
 public let notFound: Middleware = { _, response, next in
-    response.sendString(.notFound, value: "404 Not Found")
+    response.sendString(.notFound, value: "404 Not found")
     next()
 }
 
