@@ -207,6 +207,10 @@ extension Server.HTTPHandler {
             self.headers = headers
             self.body = value.data(using: .utf8)
         }
+        
+        public func sendString(_ statusCode: HTTPResponseStatus, headers: HTTPHeaders = HTTPHeaders()) -> Void {
+            sendString(statusCode, headers: headers, value: statusCode.reasonPhrase)
+        }
     }
 }
 
@@ -231,7 +235,7 @@ public typealias Middleware = (
 ) -> Void
 
 public let notFound: Middleware = { _, response, next in
-    response.sendString(.notFound, value: "404 Not found")
+    response.sendString(.notFound)
     next()
 }
 

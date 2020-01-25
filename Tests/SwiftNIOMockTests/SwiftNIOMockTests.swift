@@ -187,7 +187,7 @@ class SwiftNIOMockTests: XCTestCase {
                 // expect to recieve default not found response
                 XCTAssertNil(error)
                 XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 404)
-                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "404 Not found")
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Not Found")
             }.resume()
         }
     }
@@ -226,7 +226,7 @@ class SwiftNIOMockTests: XCTestCase {
                 // expect to recieve default not found response
                 XCTAssertNil(error)
                 XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 404)
-                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "404 Not found")
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Not Found")
             }.resume()
         }
     }
