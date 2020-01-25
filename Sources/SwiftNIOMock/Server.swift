@@ -243,12 +243,13 @@ public func router(
 /// Middleware that allows to redirect incomming request and intercept responses
 public func redirect(
     session: URLSession = URLSession.shared,
+    cachePolicy: NSURLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData,
     request redirect: @escaping (Server.HTTPHandler.Request) -> Server.HTTPHandler.Request,
     response intercept: @escaping (Server.HTTPHandler.Response) -> Void = { _ in }
 ) -> Middleware {
     return { request, response, next in
         var redirect = URLRequest(redirect(request))
-        redirect.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        redirect.cachePolicy = cachePolicy
 
         let task = session.dataTask(with: redirect) { data, urlResponse, error in
             guard let urlResponse = urlResponse as? HTTPURLResponse else {
@@ -273,7 +274,7 @@ public func redirect(
     }
 }
 
-/// Middleware that delay another middleware
+/// Middleware that delays another middleware
 public func delay(_ delay: TimeAmount, middleware: @escaping Middleware) -> Middleware {
     return { request, response, next in
         _ = request.ctx.eventLoop.scheduleTask(in: delay) {
