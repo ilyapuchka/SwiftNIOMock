@@ -33,8 +33,8 @@ A middleware is a function that is based on an incoming request can modify a res
 
 ```swift
 typealias Middleware = (
-    _ request: Server.HTTPHandler.Request,
-    _ response: Server.HTTPHandler.Response,
+    _ request: MiddlewareRequest,
+    _ response: MiddlewareResponse,
     _ next: @escaping () -> Void
 ) -> Void
 ```
@@ -43,8 +43,8 @@ When middleware function is done with response it should call the `next` closure
 
 ```swift
 func echo(
-    request: Server.HTTPHandler.Request,
-    response: Server.HTTPHandler.Response,
+    request: MiddlewareRequest,
+    response: MiddlewareResponse,
     next: @escaping () -> Void
 ) {
     response.statusCode = .ok
@@ -52,6 +52,8 @@ func echo(
     next()
 }
 ```
+
+It's important to call the `next` closure when your middlewere has finished its work, otherwise the server won't close connection and send data properly.
 
 `redirect` middleware allows you to redirect incoming requests and intercept responses. It also accepts an instance of `URLSession` (`URLSession.shared` session by default) that it will use to perform a request, which allows it to record & replay all requests. Check out `SwiftNIOMockExampleUITests.swift` to see the example of how to use SwiftNIOMock in record & replay mode powered by Vinyl.
 
@@ -67,10 +69,47 @@ func redirect(
 
 ```swift
 func router(
-    route: @escaping (Server.HTTPHandler.Request) -> Middleware?,
-    notFound: @escaping Middleware
+    notFound: @escaping Middleware,
+    route: @escaping (Server.HTTPHandler.Request) -> Middleware?
 ) -> Middleware
 ```
+
+### Routing
+
+SwiftNIOMock comes with a builtin routing based on regular expressions. You can define routes for common HTTP methods:
+
+```swift
+GET("/helloworld") { _, response, next in
+    response.sendString(.ok, value: "Hello world!")
+    next()
+})
+
+POST("/register") { request, response, next in
+    // process data from request.http.body
+    response.sendString(.ok, value: "Hello world!")
+    next()
+})
+```
+
+Route can be matched either against raw regular expression string or patterns created with custom `/`, `/?` and `&` operators:
+
+```swift
+/"hello"/?"name=world" == #"/hello/\?name=world"#
+```
+
+You can use `.string`, `.number`, `.any`, `.path` operators to match path components and query parameters:
+
+```swift
+GET(/"user"/.string/"repos"/?.number("page")&.string("filter")) { request, response, next in
+    print(request.captures[0] as String) // "apple"
+    print(request.captures["page"] as Int) // 1
+    print(request.captures["filter"] as String) // "swift"
+    next()
+})
+```
+
+If you are already using some other routing framework in your app, i.e. for your deeplinks, you can plug it in by passing your own routing middleware to `router(notFound:route:)`.
+
 
 To see an example of usage SwiftNIOMock in UI tests check SwiftNIOMockExample.
 

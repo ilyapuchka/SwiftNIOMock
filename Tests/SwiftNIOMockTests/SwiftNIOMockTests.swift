@@ -195,10 +195,10 @@ class SwiftNIOMockTests: XCTestCase {
     func testNonEmptyRouter() {
         // given server with non empty router
         let router = SwiftNIOMock.router {
-            GET(at: { $0.head.uri == "/helloworld" }, response: { request, response, next in
+            GET("/helloworld") { _, response, next in
                 response.sendString(.ok, value: "Hello world!")
                 next()
-            })
+            }
         }
         withServer(handler: router) { server, expectation in
             defer { expectation.fulfill() }
@@ -230,14 +230,14 @@ class SwiftNIOMockTests: XCTestCase {
     func testMultipleRoutes() {
         let router = SwiftNIOMock.router(services: [
             Service().routes {
-                GET(at: { $0.head.uri == "/helloworld" }, response: { request, response, next in
+                GET("/helloworld") { _, response, next in
                     response.sendString(.ok, value: "Hello world!")
                     next()
-                })
-                GET(at: { $0.head.uri == "/echo" }, response: { request, response, next in
+                }
+                GET("/echo") { _, response, next in
                     response.sendString(.ok, value: "echo")
                     next()
-                })
+                }
             }
         ])
 
@@ -281,16 +281,16 @@ class SwiftNIOMockTests: XCTestCase {
     
     func testMultipleServices() {
         let helloService = Service().routes {
-            GET(at: { $0.head.uri == "/helloworld" }, response: { request, response, next in
+            GET("/helloworld") { _, response, next in
                 response.sendString(.ok, value: "Hello world!")
                 next()
-            })
+            }
         }
         let echoService = Service().routes {
-            GET(at: { $0.head.uri == "/echo" }, response: { request, response, next in
+            GET("/echo") { _, response, next in
                 response.sendString(.ok, value: "echo")
                 next()
-            })
+            }
         }
         
         let router = SwiftNIOMock.router(services: [
@@ -335,6 +335,123 @@ class SwiftNIOMockTests: XCTestCase {
             }.resume()
         }
     }
+    
+    func testRoutePatterns() {
+        func AssertEqual(_ lhs: PathComponentsMatcher, _ rhs: String, file: StaticString = #file, line: UInt = #line) {
+            XCTAssertEqual(lhs.pathPattern, rhs, file: file, line: line)
+        }
+        
+        AssertEqual(
+            /"user"/.string/"repos"/.number/.any,
+            "/user/([a-zA-Z]+)/repos/([0-9]+)/([^/]+)"
+        )
+        AssertEqual(
+            /"user"/.string/"repos"/?.number("page")&.string("filter"),
+            #"/user/([a-zA-Z]+)/repos/?\?((?:&?[^=&?]+=[^=&?]+)*)"#
+        )
+    }
+    
+    func testCaptures() {
+        var pattern: URLComponentsMatcher
+        func withPath(path: String, expectPath: [String], expectQuery: [String: String]?, file: StaticString = #file, line: UInt = #line) {
+            let match = SwiftNIOMock.match(path: path, matcher: pattern)
+            
+            XCTAssertNotNil(match, file: file, line: line)
+            XCTAssertEqual(match?.path, expectPath, file: file, line: line + 2)
+            XCTAssertEqual(match?.query, expectQuery, file: file, line: line + 3)
+        }
+        
+        pattern = /"user"/.string/"repos"/?.number("page")&.string("filter")
+
+        withPath(
+            path: "/user/ilya/repos/?filter=swift&page=2",
+            expectPath: ["ilya"],
+            expectQuery: ["page": "2", "filter": "swift"]
+        )
+
+        withPath(
+            path: "/user/ilya/repos?page=2&filter=swift",
+            expectPath: ["ilya"],
+            expectQuery: ["page": "2", "filter": "swift"]
+        )
+
+        pattern = /"helloworld"
+
+        withPath(
+            path: "/helloworld",
+            expectPath: [],
+            expectQuery: [:]
+        )
+
+        pattern = .path/.any/?.string("name")
+        
+        withPath(
+            path: "/hello/user/?name=ilya",
+            expectPath: ["user"],
+            expectQuery: ["name": "ilya"]
+        )
+        
+        pattern = #"/hello/([^/]+)/\?name=([a-zA-Z]+)"#
+
+        withPath(
+            path: "/hello/user/?name=ilya",
+            expectPath: ["user", "ilya"],
+            expectQuery: [:]
+        )
+    }
+    
+    func testRoutesOrder() {
+        let router = SwiftNIOMock.router(services: [
+            Service().routes {
+                GET("/hello") { _, response, next in
+                    response.sendString(.ok, value: "Hello!")
+                    next()
+                }
+                GET("/helloworld") { _, response, next in
+                    response.sendString(.ok, value: "Hello world!")
+                    next()
+                }
+            }
+        ])
+
+        withServer(handler: router) { server, expectation in
+            defer { expectation.fulfill() }
+            
+            // when making request to known route
+            let knownRouteExpectation = self.expectation(description: "")
+            let knownUrl = URL(string: "http://localhost:8080/helloworld")!
+            URLSession.shared.dataTask(with: knownUrl) { data, response, error in
+                defer { knownRouteExpectation.fulfill() }
+                // expect to recieve registered response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Hello world!")
+            }.resume()
+            
+            // when making request to another route
+            let anotherRouteExpectation = self.expectation(description: "")
+            let anotherUrl = URL(string: "http://localhost:8080/hello")!
+            URLSession.shared.dataTask(with: anotherUrl) { data, response, error in
+                defer { anotherRouteExpectation.fulfill() }
+                // expect to recieve default not found response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Hello!")
+            }.resume()
+            
+            // when making request to unknown route
+            let unknownRouteExpectation = self.expectation(description: "")
+            let unknownUrl = URL(string: "http://localhost:8080/helloween")!
+            URLSession.shared.dataTask(with: unknownUrl) { data, response, error in
+                defer { unknownRouteExpectation.fulfill() }
+                // expect to recieve default not found response
+                XCTAssertNil(error)
+                XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+                XCTAssertEqual(data.flatMap { String(data: $0, encoding: .utf8) }, "Hello!")
+            }.resume()
+        }
+    }
+    
 
 }
 

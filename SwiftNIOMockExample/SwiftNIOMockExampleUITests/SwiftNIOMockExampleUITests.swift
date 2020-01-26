@@ -51,17 +51,12 @@ class SwiftNIOMockExampleUITests: XCTestCase {
         })
 
         server = Server(port: 8080, handler:
-            SwiftNIOMock.router(
-                notFound: notFound,
-                services: [
-                    Service().routes {
-                        GET(at: { $0.head.uri == "/helloworld" }) { (request, response, next) in
-                            response.sendString(.ok, value: "Hello world!")
-                            next()
-                        }
-                    }
-                ]
-            )
+            SwiftNIOMock.router(notFound: notFound) {
+                GET("/helloworld") { (_, response, next) in
+                    response.sendString(.ok, value: "Hello world!")
+                    next()
+                }
+            }
         )
         try! server.start()
     }
