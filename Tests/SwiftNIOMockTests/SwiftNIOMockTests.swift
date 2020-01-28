@@ -337,7 +337,7 @@ class SwiftNIOMockTests: XCTestCase {
     }
     
     func testRoutePatterns() {
-        func AssertEqual(_ lhs: PathComponentsMatcher, _ rhs: String, file: StaticString = #file, line: UInt = #line) {
+        func AssertEqual(_ lhs: URLComponentsMatcher, _ rhs: String, file: StaticString = #file, line: UInt = #line) {
             XCTAssertEqual(lhs.pathPattern, rhs, file: file, line: line)
         }
         
@@ -346,8 +346,20 @@ class SwiftNIOMockTests: XCTestCase {
             "/user/([a-zA-Z]+)/repos/([0-9]+)/([^/]+)"
         )
         AssertEqual(
+            /"user"/.string/"repos"/.number/.any.end,
+            "/user/([a-zA-Z]+)/repos/([0-9]+)/([^/]+)$"
+        )
+        AssertEqual(
             /"user"/.string/"repos"/?.number("page")&.string("filter"),
             #"/user/([a-zA-Z]+)/repos/?\?((?:&?[^=&?]+=[^=&?]+)*)"#
+        )
+        AssertEqual(
+            /"user"/.string/"repos"/?.number("page")&.string("filter").end,
+            #"/user/([a-zA-Z]+)/repos/?\?((?:&?[^=&?]+=[^=&?]+)*)$"#
+        )
+        AssertEqual(
+            /"user"/.string/"repos"/?.end,
+            #"/user/([a-zA-Z]+)/repos/?\?$"#
         )
     }
     

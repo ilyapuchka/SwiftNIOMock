@@ -97,7 +97,7 @@ func queryCaptures(path: NSString, matcher: URLComponentsMatcher, match: NSTextC
 
 public func route(_ method: HTTPMethod, at matcher: URLComponentsMatcher, response: @escaping Middleware) -> Middleware {
     return { request, httpResponse, next in
-        guard method == request.0.head.method else {
+        guard method == request.http.head.method else {
             return next()
         }
 
@@ -216,6 +216,17 @@ public protocol URLComponentsMatcher {
 extension String: URLComponentsMatcher {
     public var pathPattern: String { self }
     public var queryParams: [String : String] { [:] }
+    public var end: EndMatcher { EndMatcher(pathPattern: pathPattern, queryParams: queryParams) }
+}
+
+public class EndMatcher: URLComponentsMatcher {
+    public fileprivate(set) var pathPattern: String
+    public let queryParams: [String: String]
+    
+    init(pathPattern: String, queryParams: [String: String]) {
+        self.pathPattern = pathPattern + "$"
+        self.queryParams = queryParams
+    }
 }
 
 public class PathComponentsMatcher: URLComponentsMatcher, ExpressibleByStringLiteral {
@@ -233,6 +244,7 @@ public class PathComponentsMatcher: URLComponentsMatcher, ExpressibleByStringLit
     public var number: PathComponentsMatcher { append(pattern: "[0-9]+", capture: true) }
     public var any: PathComponentsMatcher { append(pattern: "[^/]+", capture: true) }
     public var path: PathComponentsMatcher { append(pattern: "[^/]+", capture: false) }
+    public var end: EndMatcher { EndMatcher(pathPattern: pathPattern, queryParams: queryParams) }
 
     static let empty = PathComponentsMatcher(stringLiteral: "")
     
@@ -267,21 +279,30 @@ public func /(_ lhs: PathComponentsMatcher, _ rhs: PathComponentsMatcher) -> Pat
     return lhs
 }
 
+public func /(_ lhs: PathComponentsMatcher, _ rhs: EndMatcher) -> EndMatcher {
+    rhs.pathPattern = lhs.pathPattern + "/" + rhs.pathPattern
+    return rhs
+}
+
 public class QueryComponentsMatcher: URLComponentsMatcher {
-    static let pattern = #"/?\?((?:&?[^=&?]+=[^=&?]+)*)"#
+    static let pattern = #"((?:&?[^=&?]+=[^=&?]+)*)"#
     public private(set) var pathPattern: String
     public private(set) var queryParams: [String: String]
 
     init(pathPattern: String = "", params: [String: String]) {
-        self.pathPattern = pathPattern + QueryComponentsMatcher.pattern
+        self.pathPattern = pathPattern
         self.queryParams = params
     }
 
     public func string(_ name: String) -> QueryComponentsMatcher { append(param: name, pattern: "([a-zA-Z]+)") }
     public func number(_ name: String) -> QueryComponentsMatcher { append(param: name, pattern: "([0-9]+)") }
     public func any(_ name: String) -> QueryComponentsMatcher { append(param: name, pattern: "([^/]+)") }
+    public var end: EndMatcher { EndMatcher(pathPattern: pathPattern, queryParams: queryParams) }
 
     func append(param: String, pattern: String) -> QueryComponentsMatcher {
+        if !pathPattern.hasSuffix(QueryComponentsMatcher.pattern) {
+            pathPattern += QueryComponentsMatcher.pattern
+        }
         queryParams[param] = pattern
         return self
     }
@@ -295,7 +316,7 @@ public func /(_ lhs: PathComponentsMatcher, _ rhs: QueryComponentsMatcher) -> Pa
 
 postfix operator /?
 public postfix func /? (_ lhs: PathComponentsMatcher) -> QueryComponentsMatcher {
-    return QueryComponentsMatcher(pathPattern: lhs.pathPattern, params: [:])
+    return QueryComponentsMatcher(pathPattern: lhs.pathPattern + #"/?\?"#, params: [:])
 }
 
 postfix operator &
