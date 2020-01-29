@@ -94,7 +94,7 @@ POST("/register") { request, response, next in
 Route can be matched either against raw regular expression string or patterns created with custom `/`, `/?` and `&` operators:
 
 ```swift
-/"hello"/?"name=world" == #"/hello/\?name=world"#
+/"hello"/?.string("name") == #"/hello/\?name=([a-zA-Z]+)"#
 ```
 
 You can use `.string`, `.number`, `.any`, `.path` operators to match path components and query parameters:
