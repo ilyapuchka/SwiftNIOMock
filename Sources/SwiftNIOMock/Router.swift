@@ -12,6 +12,22 @@ public typealias RouteMiddleware<A> = (
     _ next: @escaping () -> Void
 ) -> Void
 
+public func route(_ predicate: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return { request, httpResponse, next in
+        predicate(request)
+            ? response(request, httpResponse, next)
+            : next()
+    }
+}
+
+public func route(_ method: HTTPMethod, _ predicate: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
+    return { request, httpResponse, next in
+        request.head.method == method && predicate(request)
+            ? response(request, httpResponse, next)
+            : next()
+    }
+}
+
 public func route(_ format: URLFormat<Prelude.Unit>, response: @escaping Middleware) -> Middleware {
     route(format, response: { response($0, $2, $3) })
 }

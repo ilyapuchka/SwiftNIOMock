@@ -237,7 +237,7 @@ class SwiftNIOMockTests: XCTestCase {
                     response.sendString(.ok, value: "Hello world!")
                     next()
                 }
-                route(GET/.echo) { (request, response, next) in
+                route(.GET, { $0.head.uri == "/echo" }) { (request, response, next) in
                     response.sendString(.ok, value: "echo")
                     next()
                 }
@@ -344,8 +344,8 @@ class SwiftNIOMockTests: XCTestCase {
             let users: [String]
             var echo: String
             
-            func user(byName name: String) -> String {
-                return users.first(where: { $0 == name }) ?? ""
+            func user(byName name: String) -> String? {
+                users.first { $0 == name }
             }
             
             init(users: [String], echo: String) {
@@ -354,19 +354,19 @@ class SwiftNIOMockTests: XCTestCase {
                 super.init()
                 
                 routes {
-                    GET/.helloworld == \HelloService.users
                     GET/.echo == \HelloService.echo
-                    GET/.hello/.string == HelloService.user(byName:)
+                    GET/.users == \HelloService.users
+                    GET/.users/.string == HelloService.user(byName:)
                 }
             }
         }
         
-        let helloService: HelloService! = HelloService(users: ["Foo", "Bar"], echo: "")
+        let helloService = HelloService(users: ["Foo", "Bar"], echo: "")
         
         var router: Middleware! = SwiftNIOMock.router(services: [helloService])
         withServer(handler: router) { server, expectation in
             // when making request to known route
-            let knownUrl = URL(string: "http://localhost:8080/helloworld")!
+            let knownUrl = URL(string: "http://localhost:8080/users")!
             URLSession.shared.dataTask(with: knownUrl) { data, response, error in
                 defer { expectation.fulfill() }
                 // expect to recieve registered response
@@ -405,7 +405,7 @@ class SwiftNIOMockTests: XCTestCase {
 
             // when making request to parametrised route
             let parameterRouteExpectation = self.expectation(description: "")
-            let parameterUrl = URL(string: "http://localhost:8080/hello/Foo")!
+            let parameterUrl = URL(string: "http://localhost:8080/users/Foo")!
             URLSession.shared.dataTask(with: parameterUrl) { data, response, error in
                 defer { parameterRouteExpectation.fulfill() }
                 // expect to recieve default not found response
