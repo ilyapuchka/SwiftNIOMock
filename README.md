@@ -74,6 +74,80 @@ func router(
 
 To see an example of usage SwiftNIOMock in UI tests check SwiftNIOMockExample.
 
+### Router
+
+While you can use the `router` function to create a routing middleware for the mock server on practice it is a good idea to break it down into smaller services. For that you can use `Service` type:
+
+```swift
+let fooService = Service {
+    route({ $0.head.uri == "/foo" }) { (request, response, next) in
+        response.sendString(.ok, value: "Foo")
+        next()
+    }
+}
+let barService = Service {
+    route({ $0.head.uri == "/bar" }) { (request, response, next) in
+        response.sendString(.ok, value: "Bar")
+        next()
+    }
+}
+
+let router = SwiftNIOMock.router(services: [
+    fooService,
+    barService
+])
+```
+
+You can as well implement your own service by subclassing `Service`:
+
+```swift
+class HelloService: Service {
+    override init() {
+        super.init()
+        routes {
+            ...
+        }
+    }
+}
+let helloService = HelloService()
+let router = SwiftNIOMock.router(services: [helloService]
+```
+
+You can register routes using closure predicates as in above examples or using [URLFormat](https://github.com/ilyapuchka/URLFormat):
+
+```swift
+route(GET/.foo) { (request, response, next) in
+    response.sendString(.ok, value: "Foo")
+    next()
+}
+```
+
+You can also use a shorthand syntax to bind routes to a service keypath or a function which return type is `Encodable`:
+
+```swift
+class HelloService: Service {
+    let users: [String]
+    
+    func user(byName name: String) -> String? {
+        users.first { $0 == name }
+    }
+    
+    init(users: [String]) {
+        self.users = users
+        super.init()
+        
+        routes {
+            GET/.users == \HelloService.users
+            GET/.users/.string == HelloService.user(byName:)
+        }
+    }
+}
+```
+
+As routes are bound to key paths or functions you can mutate the state of your service and these changes will be reflected in the responses.
+
+When binding a route to a function its parameters types must match `URLFormat` type, i.e. `URLFormat<((String, String), Int)>` can be only matched to the function `(String, String, Int) -> T where T: Encodable`. Additionally you can add a `Server.HTTPHandler.Request` parameter as the last parameter of the function to access request body data.
+
 ## Installation
 
 You can install SwiftNIOMock with CocoaPods (1.6.0.beta.2) or Swift Package Manager
