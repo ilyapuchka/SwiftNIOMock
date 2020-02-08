@@ -106,9 +106,10 @@ extension Server {
                         _ = ctx.channel.write(HTTPServerResponsePart.head(
                             HTTPResponseHead(version: head.version, status: response.statusCode, headers: response.headers))
                         )
-                        _ = response.body
-                            .flatMap { String(data: $0, encoding: .utf8) }
-                            .flatMap { responseBuffer.write(string: $0) }
+
+                        if let body = response.body {
+                            responseBuffer.write(bytes: body)
+                        }
 
                         _ = ctx.channel.write(HTTPServerResponsePart.body(.byteBuffer(responseBuffer)))
 
