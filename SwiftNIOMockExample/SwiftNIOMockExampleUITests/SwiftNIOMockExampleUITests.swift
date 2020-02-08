@@ -9,6 +9,7 @@
 import XCTest
 import SwiftNIOMock
 import Vinyl
+import URLFormat
 
 class SwiftNIOMockExampleUITests: XCTestCase {
     var server: Server!
@@ -54,8 +55,8 @@ class SwiftNIOMockExampleUITests: XCTestCase {
             SwiftNIOMock.router(
                 notFound: notFound,
                 services: [
-                    Service().routes {
-                        GET(at: { $0.head.uri == "/helloworld" }) { (request, response, next) in
+                    Service {
+                        route(GET/.helloworld) { (_, response, next) in
                             response.sendString(.ok, value: "Hello world!")
                             next()
                         }

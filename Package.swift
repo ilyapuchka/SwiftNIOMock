@@ -14,9 +14,10 @@ let package = Package(
         ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-nio.git", from: "1.12.0"),
+        .package(url: "https://github.com/ilyapuchka/URLFormat.git", .branch("master")),
         ],
     targets: [
-        .target(name: "SwiftNIOMock", dependencies: ["NIO", "NIOHTTP1"]),
+        .target(name: "SwiftNIOMock", dependencies: ["NIO", "NIOHTTP1", "URLFormat"]),
         .testTarget(name: "SwiftNIOMockTests", dependencies: ["SwiftNIOMock"]),
     ]
 )

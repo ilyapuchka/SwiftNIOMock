@@ -1,10 +1,3 @@
-//
-//  Server.swift
-//  SwiftNIOMock
-//
-//  Created by Ilya Puchka on 18/12/2018.
-//
-
 import Foundation
 import NIO
 import NIOHTTP1
@@ -189,7 +182,7 @@ extension Server.HTTPHandler {
 extension Server.HTTPHandler {
     public class Response {
         // if nil then nothing was ever written to response
-        fileprivate var _statusCode: HTTPResponseStatus!
+        internal private(set) var _statusCode: HTTPResponseStatus!
         public var statusCode: HTTPResponseStatus {
             get { _statusCode ?? .ok }
             set { _statusCode = newValue }
@@ -296,79 +289,7 @@ public func delay(_ delay: TimeAmount, middleware: @escaping Middleware) -> Midd
     }
 }
 
-public func route(_ method: HTTPMethod, at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
-    return { request, httpResponse, next in
-        guard method == request.head.method, match(request) else {
-            return next()
-        }
-        response(request, httpResponse, next)
-    }
-}
-
-public func GET(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
-    return route(.GET, at: match, response: response)
-}
-
-public func PUT(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
-    return route(.PUT, at: match, response: response)
-}
-
-public func POST(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
-    return route(.POST, at: match, response: response)
-}
-
-public func PATCH(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
-    return route(.PATCH, at: match, response: response)
-}
-
-public func DELETE(at match: @escaping (Server.HTTPHandler.Request) -> Bool, response: @escaping Middleware) -> Middleware {
-    return route(.DELETE, at: match, response: response)
-}
-
-public protocol ServiceProtocol: class {
-    var routers: [Middleware] { get }
-    func routes(@RouterBuilder _ router: () -> Middleware) -> Self
-}
-
-open class Service: ServiceProtocol {
-    public private(set) var routers: [Middleware] = []
-    
-    public init() {}
-    
-    @discardableResult
-    public func routes(@RouterBuilder _ router: () -> Middleware) -> Self {
-        self.routers.append(router())
-        return self
-    }
-}
-
-
-@_functionBuilder
-public struct RouterBuilder {
-    public static func buildBlock(_ items: Middleware...) -> Middleware {
-        return buildBlock(items)
-    }
-    
-    public static func buildBlock(_ items: [Middleware]) -> Middleware {
-        let allRoutes = items
-        return { request, response, finish in
-            guard !allRoutes.isEmpty else {
-                return finish()
-            }
-            var next: (() -> Void)? = {}
-            var i = allRoutes.startIndex
-            next = {
-                let route = allRoutes[i]
-                i = allRoutes.index(after: i)
-                let isLast = i == allRoutes.endIndex
-                route(request, response, isLast ? finish : next!)
-            }
-            next!()
-        }
-    }
-}
-
-private func router(
+public func router(
     notFound: @escaping Middleware = notFound,
     route: @escaping Middleware
 ) -> Middleware {
@@ -386,9 +307,9 @@ private func router(
 
 public func router(
     notFound: @escaping Middleware = notFound,
-    @RouterBuilder _ routes: () -> Middleware
+    @RouterBuilder _ router: () -> Middleware
 ) -> Middleware {
-    return SwiftNIOMock.router(notFound: notFound, route: routes())
+    return SwiftNIOMock.router(notFound: notFound, route: router())
 }
 
 public func router(
