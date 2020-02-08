@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/ilyapuchka/common-parsers.git",
         "state": {
           "branch": "master",
-          "revision": "c8358a757398d525bd588d10bd7d1d30bf608686",
+          "revision": "2386ef5d444746ad77a70296d878683ae0f9c9a2",
           "version": null
         }
       },
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "a20e129c22ad00a51c902dca54a5456f90664780",
-          "version": "1.12.0"
+          "revision": "ba7970fe396e8198b84c6c1b44b38a1d4e2eb6bd",
+          "version": "1.14.1"
         }
       },
       {
@@ -42,7 +42,7 @@
         "repositoryURL": "https://github.com/ilyapuchka/URLFormat.git",
         "state": {
           "branch": "master",
-          "revision": "2b0b9160d1f944977e0152228b58305d514daaf4",
+          "revision": "d2aa0da9b356fdd52a756f8ea047d181ee3f1553",
           "version": null
         }
       }
