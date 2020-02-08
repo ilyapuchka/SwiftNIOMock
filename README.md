@@ -74,9 +74,9 @@ func router(
 
 To see an example of usage SwiftNIOMock in UI tests check SwiftNIOMockExample.
 
-### Router
+### Routing
 
-While you can use the `router` function to create a routing middleware for the mock server on practice it is a good idea to break it down into smaller services. For that you can use `Service` type:
+While you can use the `router` function to create a routing middleware for the mock server on the practice it is a good idea to break it down into smaller services. For that you can use `Service` type:
 
 ```swift
 let fooService = Service {
@@ -105,24 +105,31 @@ class HelloService: Service {
     override init() {
         super.init()
         routes {
-            ...
+            route({ $0.head.uri == "/helloworld" }) { (request, response, next) in
+                response.sendString(.ok, value: "Hello World!")
+                next()
+            }
         }
     }
 }
 let helloService = HelloService()
-let router = SwiftNIOMock.router(services: [helloService]
+let router = SwiftNIOMock.router(services: [helloService])
 ```
 
 You can register routes using closure predicates as in above examples or using [URLFormat](https://github.com/ilyapuchka/URLFormat):
 
 ```swift
-route(GET/.foo) { (request, response, next) in
-    response.sendString(.ok, value: "Foo")
-    next()
+import URLFormat
+
+routes {
+    route(GET/.helloworld) { (request, response, next) in
+        response.sendString(.ok, value: "Hello World!")
+        next()
+    }
 }
 ```
 
-You can also use a shorthand syntax to bind routes to a service keypath or a function which return type is `Encodable`:
+You can also use a shorthand syntax to bind routes to a service KeyPath or a function with `Encodable` return value type:
 
 ```swift
 class HelloService: Service {
@@ -144,10 +151,19 @@ class HelloService: Service {
 }
 ```
 
-As routes are bound to key paths or functions you can mutate the state of your service and these changes will be reflected in the responses.
+As routes are bound to key paths or functions you can mutate the state of your service and these changes will be reflected in the later responses.
 
-When binding a route to a function its parameters types must match `URLFormat` type, i.e. `URLFormat<((String, String), Int)>` can be only matched to the function `(String, String, Int) -> T where T: Encodable`. Additionally you can add a `Server.HTTPHandler.Request` parameter as the last parameter of the function to access request body data.
+When binding a route to a function its parameters types must match `URLFormat` type, i.e. `URLFormat<((String, String), Int)>` can be only bound to a function `(String, String, Int) -> T where T: Encodable`. Additionally you can add a `Server.HTTPHandler.Request` parameter as the last parameter of the function to access a request body data.
 
 ## Installation
 
-You can install SwiftNIOMock with CocoaPods (1.6.0.beta.2) or Swift Package Manager
+```swift
+import PackageDescription
+
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/ilyapuchka/SwiftNIOMock.git", .branch("master")),
+    ]
+)
+```
+
