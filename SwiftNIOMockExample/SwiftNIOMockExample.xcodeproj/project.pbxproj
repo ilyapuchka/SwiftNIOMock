@@ -3,21 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DEDA38266F66E83F3C0D8A8 /* Pods_SwiftNIOMockExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAED498BEED0E182CE1E0CB9 /* Pods_SwiftNIOMockExample.framework */; };
-		46548A5B883BFCABBBF55375 /* Pods_SwiftNIOMockExampleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBFCA928EC2EA0D0063FBDF1 /* Pods_SwiftNIOMockExampleUITests.framework */; };
 		B5BCF86821C954B7009DF652 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF86721C954B7009DF652 /* AppDelegate.swift */; };
 		B5BCF86A21C954B7009DF652 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF86921C954B7009DF652 /* ViewController.swift */; };
 		B5BCF86D21C954B7009DF652 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF86B21C954B7009DF652 /* Main.storyboard */; };
 		B5BCF86F21C954BA009DF652 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF86E21C954BA009DF652 /* Assets.xcassets */; };
 		B5BCF87221C954BA009DF652 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF87021C954BA009DF652 /* LaunchScreen.storyboard */; };
 		B5BCF87D21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */; };
-		B5BCF8A321C95545009DF652 /* SwiftNIOMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BCF8A221C95545009DF652 /* SwiftNIOMock.framework */; };
-		B5BCF8D521CC1B93009DF652 /* Vinyl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BCF8D421CC1B93009DF652 /* Vinyl.framework */; };
 		B5BCF8D821CC1BF0009DF652 /* Recordings in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF8D721CC1BF0009DF652 /* Recordings */; };
+		B5C8724E23EEEBA8000B6633 /* SwiftNIOMock in Frameworks */ = {isa = PBXBuildFile; productRef = B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */; };
+		B5F6BB0923EEEAB900062CD0 /* Vinyl in Frameworks */ = {isa = PBXBuildFile; productRef = B5F6BB0823EEEAB900062CD0 /* Vinyl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,9 +29,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		26D847820215E012C113D383 /* Pods-SwiftNIOMockExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftNIOMockExample.debug.xcconfig"; path = "Target Support Files/Pods-SwiftNIOMockExample/Pods-SwiftNIOMockExample.debug.xcconfig"; sourceTree = "<group>"; };
-		28C33DFA7E1192C30B9663B8 /* Pods-SwiftNIOMockExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftNIOMockExampleUITests.release.xcconfig"; path = "Target Support Files/Pods-SwiftNIOMockExampleUITests/Pods-SwiftNIOMockExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
-		8950F266C0029BE690749251 /* Pods-SwiftNIOMockExampleUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftNIOMockExampleUITests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftNIOMockExampleUITests/Pods-SwiftNIOMockExampleUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B5BCF86421C954B7009DF652 /* SwiftNIOMockExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftNIOMockExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5BCF86721C954B7009DF652 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5BCF86921C954B7009DF652 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -44,13 +39,7 @@
 		B5BCF87821C954BA009DF652 /* SwiftNIOMockExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftNIOMockExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNIOMockExampleUITests.swift; sourceTree = "<group>"; };
 		B5BCF87E21C954BA009DF652 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B5BCF8A221C95545009DF652 /* SwiftNIOMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftNIOMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5BCF8D221CC1B25009DF652 /* SwiftNIOMockVinyl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftNIOMockVinyl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5BCF8D421CC1B93009DF652 /* Vinyl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vinyl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5BCF8D721CC1BF0009DF652 /* Recordings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Recordings; sourceTree = "<group>"; };
-		BBFCA928EC2EA0D0063FBDF1 /* Pods_SwiftNIOMockExampleUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftNIOMockExampleUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAED498BEED0E182CE1E0CB9 /* Pods_SwiftNIOMockExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftNIOMockExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D9828E91240705E07758D72C /* Pods-SwiftNIOMockExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftNIOMockExample.release.xcconfig"; path = "Target Support Files/Pods-SwiftNIOMockExample/Pods-SwiftNIOMockExample.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +47,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DEDA38266F66E83F3C0D8A8 /* Pods_SwiftNIOMockExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,9 +54,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5BCF8D521CC1B93009DF652 /* Vinyl.framework in Frameworks */,
-				B5BCF8A321C95545009DF652 /* SwiftNIOMock.framework in Frameworks */,
-				46548A5B883BFCABBBF55375 /* Pods_SwiftNIOMockExampleUITests.framework in Frameworks */,
+				B5F6BB0923EEEAB900062CD0 /* Vinyl in Frameworks */,
+				B5C8724E23EEEBA8000B6633 /* SwiftNIOMock in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +69,6 @@
 				B5BCF87B21C954BA009DF652 /* SwiftNIOMockExampleUITests */,
 				B5BCF86521C954B7009DF652 /* Products */,
 				B5BCF8A121C95545009DF652 /* Frameworks */,
-				BAD8F8ADB49AFEAD8993F7C0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,24 +107,8 @@
 		B5BCF8A121C95545009DF652 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B5BCF8D421CC1B93009DF652 /* Vinyl.framework */,
-				B5BCF8D221CC1B25009DF652 /* SwiftNIOMockVinyl.framework */,
-				B5BCF8A221C95545009DF652 /* SwiftNIOMock.framework */,
-				CAED498BEED0E182CE1E0CB9 /* Pods_SwiftNIOMockExample.framework */,
-				BBFCA928EC2EA0D0063FBDF1 /* Pods_SwiftNIOMockExampleUITests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		BAD8F8ADB49AFEAD8993F7C0 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				26D847820215E012C113D383 /* Pods-SwiftNIOMockExample.debug.xcconfig */,
-				D9828E91240705E07758D72C /* Pods-SwiftNIOMockExample.release.xcconfig */,
-				8950F266C0029BE690749251 /* Pods-SwiftNIOMockExampleUITests.debug.xcconfig */,
-				28C33DFA7E1192C30B9663B8 /* Pods-SwiftNIOMockExampleUITests.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,7 +118,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5BCF88121C954BA009DF652 /* Build configuration list for PBXNativeTarget "SwiftNIOMockExample" */;
 			buildPhases = (
-				A9C1A2E7754A5627BFE4EC4D /* [CP] Check Pods Manifest.lock */,
 				B5BCF86021C954B7009DF652 /* Sources */,
 				B5BCF86121C954B7009DF652 /* Frameworks */,
 				B5BCF86221C954B7009DF652 /* Resources */,
@@ -166,11 +135,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5BCF88421C954BA009DF652 /* Build configuration list for PBXNativeTarget "SwiftNIOMockExampleUITests" */;
 			buildPhases = (
-				E0C06830752A442E2F357E2D /* [CP] Check Pods Manifest.lock */,
 				B5BCF87421C954BA009DF652 /* Sources */,
 				B5BCF87521C954BA009DF652 /* Frameworks */,
 				B5BCF87621C954BA009DF652 /* Resources */,
-				0462BAA2887DB0A6AFA170B0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -178,6 +145,10 @@
 				B5BCF87A21C954BA009DF652 /* PBXTargetDependency */,
 			);
 			name = SwiftNIOMockExampleUITests;
+			packageProductDependencies = (
+				B5F6BB0823EEEAB900062CD0 /* Vinyl */,
+				B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */,
+			);
 			productName = SwiftNIOMockExampleUITests;
 			productReference = B5BCF87821C954BA009DF652 /* SwiftNIOMockExampleUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -210,6 +181,10 @@
 				Base,
 			);
 			mainGroup = B5BCF85B21C954B7009DF652;
+			packageReferences = (
+				B5F6BB0723EEEAB900062CD0 /* XCRemoteSwiftPackageReference "Vinyl" */,
+				B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */,
+			);
 			productRefGroup = B5BCF86521C954B7009DF652 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -240,95 +215,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		0462BAA2887DB0A6AFA170B0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SwiftNIOMockExampleUITests/Pods-SwiftNIOMockExampleUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CNIOAtomics/CNIOAtomics.framework",
-				"${BUILT_PRODUCTS_DIR}/CNIODarwin/CNIODarwin.framework",
-				"${BUILT_PRODUCTS_DIR}/CNIOHTTPParser/CNIOHTTPParser.framework",
-				"${BUILT_PRODUCTS_DIR}/CNIOLinux/CNIOLinux.framework",
-				"${BUILT_PRODUCTS_DIR}/CNIOSHA1/CNIOSHA1.framework",
-				"${BUILT_PRODUCTS_DIR}/CNIOZlib/CNIOZlib.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftNIO/NIO.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftNIOConcurrencyHelpers/NIOConcurrencyHelpers.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftNIOHTTP1/NIOHTTP1.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftNIOMock/SwiftNIOMock.framework",
-				"${BUILT_PRODUCTS_DIR}/Vinyl/Vinyl.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CNIOAtomics.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CNIODarwin.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CNIOHTTPParser.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CNIOLinux.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CNIOSHA1.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CNIOZlib.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NIO.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NIOConcurrencyHelpers.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NIOHTTP1.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftNIOMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Vinyl.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftNIOMockExampleUITests/Pods-SwiftNIOMockExampleUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A9C1A2E7754A5627BFE4EC4D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SwiftNIOMockExample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E0C06830752A442E2F357E2D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SwiftNIOMockExampleUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B5BCF86021C954B7009DF652 /* Sources */ = {
@@ -496,7 +382,6 @@
 		};
 		B5BCF88221C954BA009DF652 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 26D847820215E012C113D383 /* Pods-SwiftNIOMockExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -514,7 +399,6 @@
 		};
 		B5BCF88321C954BA009DF652 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D9828E91240705E07758D72C /* Pods-SwiftNIOMockExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -532,7 +416,6 @@
 		};
 		B5BCF88521C954BA009DF652 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8950F266C0029BE690749251 /* Pods-SwiftNIOMockExampleUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SwiftNIOMockExampleUITests/Info.plist;
@@ -551,7 +434,6 @@
 		};
 		B5BCF88621C954BA009DF652 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 28C33DFA7E1192C30B9663B8 /* Pods-SwiftNIOMockExampleUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SwiftNIOMockExampleUITests/Info.plist;
@@ -599,6 +481,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ilyapuchka/SwiftNIOMock";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		B5F6BB0723EEEAB900062CD0 /* XCRemoteSwiftPackageReference "Vinyl" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Velhotes/Vinyl";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */;
+			productName = SwiftNIOMock;
+		};
+		B5F6BB0823EEEAB900062CD0 /* Vinyl */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5F6BB0723EEEAB900062CD0 /* XCRemoteSwiftPackageReference "Vinyl" */;
+			productName = Vinyl;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B5BCF85C21C954B7009DF652 /* Project object */;
 }
