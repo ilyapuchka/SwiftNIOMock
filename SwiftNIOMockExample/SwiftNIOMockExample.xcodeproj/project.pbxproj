@@ -485,7 +485,7 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ilyapuchka/SwiftNIOMock";
+			repositoryURL = "../";
 			requirement = {
 				branch = master;
 				kind = branch;

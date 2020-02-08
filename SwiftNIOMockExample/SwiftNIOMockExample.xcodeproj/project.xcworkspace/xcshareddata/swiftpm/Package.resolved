@@ -75,10 +75,10 @@
       },
       {
         "package": "SwiftNIOMock",
-        "repositoryURL": "https://github.com/ilyapuchka/SwiftNIOMock",
+        "repositoryURL": "/Users/ilya.puchka/dev/SwiftNIOMock",
         "state": {
           "branch": "master",
-          "revision": "c14e38bdd00a07c83bd7d5e2e5d87dfebdf0330b",
+          "revision": "23c560d74ac6697e6ef8cb7a9c844d7fa0946158",
           "version": null
         }
       },
