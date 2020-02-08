@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,8 +14,6 @@
 		B5BCF87221C954BA009DF652 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF87021C954BA009DF652 /* LaunchScreen.storyboard */; };
 		B5BCF87D21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */; };
 		B5BCF8D821CC1BF0009DF652 /* Recordings in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF8D721CC1BF0009DF652 /* Recordings */; };
-		B5C8724E23EEEBA8000B6633 /* SwiftNIOMock in Frameworks */ = {isa = PBXBuildFile; productRef = B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */; };
-		B5F6BB0923EEEAB900062CD0 /* Vinyl in Frameworks */ = {isa = PBXBuildFile; productRef = B5F6BB0823EEEAB900062CD0 /* Vinyl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B506677E23EF674200EC3738 /* SwiftNIOMock */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftNIOMock; path = ..; sourceTree = "<group>"; };
 		B5BCF86421C954B7009DF652 /* SwiftNIOMockExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftNIOMockExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5BCF86721C954B7009DF652 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5BCF86921C954B7009DF652 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -54,8 +53,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5F6BB0923EEEAB900062CD0 /* Vinyl in Frameworks */,
-				B5C8724E23EEEBA8000B6633 /* SwiftNIOMock in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +62,7 @@
 		B5BCF85B21C954B7009DF652 = {
 			isa = PBXGroup;
 			children = (
+				B506677E23EF674200EC3738 /* SwiftNIOMock */,
 				B5BCF86621C954B7009DF652 /* SwiftNIOMockExample */,
 				B5BCF87B21C954BA009DF652 /* SwiftNIOMockExampleUITests */,
 				B5BCF86521C954B7009DF652 /* Products */,
@@ -146,8 +144,6 @@
 			);
 			name = SwiftNIOMockExampleUITests;
 			packageProductDependencies = (
-				B5F6BB0823EEEAB900062CD0 /* Vinyl */,
-				B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */,
 			);
 			productName = SwiftNIOMockExampleUITests;
 			productReference = B5BCF87821C954BA009DF652 /* SwiftNIOMockExampleUITests.xctest */;
@@ -182,8 +178,6 @@
 			);
 			mainGroup = B5BCF85B21C954B7009DF652;
 			packageReferences = (
-				B5F6BB0723EEEAB900062CD0 /* XCRemoteSwiftPackageReference "Vinyl" */,
-				B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */,
 			);
 			productRefGroup = B5BCF86521C954B7009DF652 /* Products */;
 			projectDirPath = "";
@@ -481,38 +475,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "../";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		B5F6BB0723EEEAB900062CD0 /* XCRemoteSwiftPackageReference "Vinyl" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Velhotes/Vinyl";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */;
-			productName = SwiftNIOMock;
-		};
-		B5F6BB0823EEEAB900062CD0 /* Vinyl */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B5F6BB0723EEEAB900062CD0 /* XCRemoteSwiftPackageReference "Vinyl" */;
-			productName = Vinyl;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B5BCF85C21C954B7009DF652 /* Project object */;
 }
