@@ -7,12 +7,27 @@
 //
 
 import SwiftNIOMock
+import URLFormat
 
 class HelloService: Service {
     //sourcery:wrap:Route: GET/.hello/.string
     func _helloworld(name: String) -> String {
         "Hello \(name)!"
     }
+    
+    //sourcery:inline:HelloService.Wrapper
+    private var __helloworld: Route<HelloService, String> {
+        func _helloworld(name: String) -> String {
+            "Hello \(name)!"
+        }
+        return Route(GET/.hello/.string) { params in
+            return _helloworld(name: params)
+        }
+    }
+    func helloworld(name: String) -> String {
+        __helloworld(name: name)
+    }
+    //sourcery:end
     
     override init() {
         super.init()
