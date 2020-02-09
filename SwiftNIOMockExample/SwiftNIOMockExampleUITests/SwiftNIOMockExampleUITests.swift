@@ -15,6 +15,7 @@ class SwiftNIOMockExampleUITests: XCTestCase {
     var server: Server!
     var notFound: Middleware!
     var recordingSession: Turntable?
+    var helloService: HelloService! = HelloService()
 
     func setupRecording(_ shouldRecord: Bool) {
         let testName = String(describing: self.invocation!.selector)
@@ -51,18 +52,21 @@ class SwiftNIOMockExampleUITests: XCTestCase {
             response.sendString(response.statusCode, value: "This response was intercepted!\r\n" + string)
         })
 
+//        server = Server(port: 8080, handler:
+//            SwiftNIOMock.router(
+//                notFound: notFound,
+//                services: [
+//                    Service {
+//                        route(GET/.helloworld) { (_, response, next) in
+//                            response.sendString(.ok, value: "Hello world!")
+//                            next()
+//                        }
+//                    }
+//                ]
+//            )
+//        )
         server = Server(port: 8080, handler:
-            SwiftNIOMock.router(
-                notFound: notFound,
-                services: [
-                    Service {
-                        route(GET/.helloworld) { (_, response, next) in
-                            response.sendString(.ok, value: "Hello world!")
-                            next()
-                        }
-                    }
-                ]
-            )
+            SwiftNIOMock.router(services: [helloService])
         )
         try! server.start()
     }
@@ -80,6 +84,7 @@ class SwiftNIOMockExampleUITests: XCTestCase {
         recordingSession?.stopRecording()
         try! server.stop()
         server = nil
+        helloService = nil
     }
 
     func testGET() {
@@ -116,7 +121,7 @@ class SwiftNIOMockExampleUITests: XCTestCase {
 
     func testRoute() {
         let exp = expectation(description: "Recieved response")
-        var request = URLRequest(url: URL(string: "http://localhost:8080/helloworld")!)
+        var request = URLRequest(url: URL(string: "http://localhost:8080/hello/world")!)
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             print(String(data: data ?? Data(), encoding: .utf8) ?? "nil")

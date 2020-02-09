@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B535C41D23F0743F00AA72EA /* HelloService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535C41C23F0743F00AA72EA /* HelloService.swift */; };
+		B535C41F23F0754D00AA72EA /* Route.stencil in Resources */ = {isa = PBXBuildFile; fileRef = B535C41E23F0754D00AA72EA /* Route.stencil */; };
+		B535C42323F0864D00AA72EA /* Route.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535C42123F0765100AA72EA /* Route.generated.swift */; };
 		B5BCF86821C954B7009DF652 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF86721C954B7009DF652 /* AppDelegate.swift */; };
 		B5BCF86A21C954B7009DF652 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF86921C954B7009DF652 /* ViewController.swift */; };
 		B5BCF86D21C954B7009DF652 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF86B21C954B7009DF652 /* Main.storyboard */; };
@@ -15,6 +18,7 @@
 		B5BCF87D21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */; };
 		B5BCF8D821CC1BF0009DF652 /* Recordings in Resources */ = {isa = PBXBuildFile; fileRef = B5BCF8D721CC1BF0009DF652 /* Recordings */; };
 		B5C8724E23EEEBA8000B6633 /* SwiftNIOMock in Frameworks */ = {isa = PBXBuildFile; productRef = B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */; };
+		B5DEA31423F0A0EA00CA80CC /* RouteWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DEA31323F0A0EA00CA80CC /* RouteWrapper.swift */; };
 		B5F6BB0923EEEAB900062CD0 /* Vinyl in Frameworks */ = {isa = PBXBuildFile; productRef = B5F6BB0823EEEAB900062CD0 /* Vinyl */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +33,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B535C41C23F0743F00AA72EA /* HelloService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloService.swift; sourceTree = "<group>"; };
+		B535C41E23F0754D00AA72EA /* Route.stencil */ = {isa = PBXFileReference; lastKnownFileType = text; path = Route.stencil; sourceTree = "<group>"; };
+		B535C42123F0765100AA72EA /* Route.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.generated.swift; sourceTree = "<group>"; };
 		B5BCF86421C954B7009DF652 /* SwiftNIOMockExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftNIOMockExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5BCF86721C954B7009DF652 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5BCF86921C954B7009DF652 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -40,6 +47,7 @@
 		B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNIOMockExampleUITests.swift; sourceTree = "<group>"; };
 		B5BCF87E21C954BA009DF652 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5BCF8D721CC1BF0009DF652 /* Recordings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Recordings; sourceTree = "<group>"; };
+		B5DEA31323F0A0EA00CA80CC /* RouteWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +106,10 @@
 			isa = PBXGroup;
 			children = (
 				B5BCF87C21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift */,
+				B535C41C23F0743F00AA72EA /* HelloService.swift */,
+				B5DEA31323F0A0EA00CA80CC /* RouteWrapper.swift */,
+				B535C42123F0765100AA72EA /* Route.generated.swift */,
+				B535C41E23F0754D00AA72EA /* Route.stencil */,
 				B5BCF8D721CC1BF0009DF652 /* Recordings */,
 				B5BCF87E21C954BA009DF652 /* Info.plist */,
 			);
@@ -135,6 +147,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5BCF88421C954BA009DF652 /* Build configuration list for PBXNativeTarget "SwiftNIOMockExampleUITests" */;
 			buildPhases = (
+				B535C42023F0757E00AA72EA /* ShellScript */,
 				B5BCF87421C954BA009DF652 /* Sources */,
 				B5BCF87521C954BA009DF652 /* Frameworks */,
 				B5BCF87621C954BA009DF652 /* Resources */,
@@ -183,7 +196,7 @@
 			mainGroup = B5BCF85B21C954B7009DF652;
 			packageReferences = (
 				B5F6BB0723EEEAB900062CD0 /* XCRemoteSwiftPackageReference "Vinyl" */,
-				B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */,
+				B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "." */,
 			);
 			productRefGroup = B5BCF86521C954B7009DF652 /* Products */;
 			projectDirPath = "";
@@ -210,11 +223,32 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B535C41F23F0754D00AA72EA /* Route.stencil in Resources */,
 				B5BCF8D821CC1BF0009DF652 /* Recordings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B535C42023F0757E00AA72EA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/Applications/Sourcery.app/Contents/MacOS/Sourcery --sources \"$PROJECT_DIR/SwiftNIOMockExampleUITests/HelloService.swift\" --templates \"$PROJECT_DIR/SwiftNIOMockExampleUITests/Route.stencil\" --output \"$PROJECT_DIR/SwiftNIOMockExampleUITests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B5BCF86021C954B7009DF652 /* Sources */ = {
@@ -230,6 +264,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B535C41D23F0743F00AA72EA /* HelloService.swift in Sources */,
+				B5DEA31423F0A0EA00CA80CC /* RouteWrapper.swift in Sources */,
+				B535C42323F0864D00AA72EA /* Route.generated.swift in Sources */,
 				B5BCF87D21C954BA009DF652 /* SwiftNIOMockExampleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,9 +520,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */ = {
+		B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "." */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "../";
+			repositoryURL = ../;
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -504,7 +541,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		B5C8724D23EEEBA8000B6633 /* SwiftNIOMock */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "SwiftNIOMock" */;
+			package = B5C8724C23EEEBA8000B6633 /* XCRemoteSwiftPackageReference "." */;
 			productName = SwiftNIOMock;
 		};
 		B5F6BB0823EEEAB900062CD0 /* Vinyl */ = {
